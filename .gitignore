@@ -1,0 +1,14 @@
+# Build output
+build/output/
+*.iso
+*.qcow2
+*.img
+
+# Container/build scratch
+build/.cache/
+build/tmp/
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
