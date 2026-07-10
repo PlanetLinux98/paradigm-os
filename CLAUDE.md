@@ -42,6 +42,14 @@ with five darker tiles tracing a subtle P — Elliott's own refinement idea.
 Two earlier concepts (literal letter-P; aurora-ring/horizon-shift alternates)
 were rejected — don't resurrect them.
 
+**FIRST ISO BUILT 2026-07-10**: ParadigmOS-1.0-Aurora-x86_64.iso (2.7 GB),
+after 5 attempts (fixes each documented in git log: dracut-live, stale result
+dir, url install method, rootpw --lock). Built in /root/paradigm-os inside
+WSL (build there, NOT /mnt/c — drvfs breaks loop mounts; sync via
+`git pull /mnt/c/Users/Elliott/ParadigmOS main`). Copy of ISO at
+build/output/ on the Windows side (gitignored). QEMU/KVM smoke test works
+inside WSL (qemu-system-x86, socat, imagemagick installed).
+
 Awaiting Elliott: reaction to the darker-P-tile shading and to the third
 wallpaper colour pass (light draft 3, dark draft 2). Standing art direction:
 grounds must avoid pure white/black and carry real colour, blue included.
