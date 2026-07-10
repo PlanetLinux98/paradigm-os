@@ -40,7 +40,7 @@ kickstart draft (`kickstart/paradigmos.ks`) and containerized build script
 committed. Mark decided: "Shifted tile" (branding/icons/paradigmos-mark.svg),
 three-tone per Elliott: dark navy P-tiles #1F4A6E, lighter grid tiles
 #3A76A8, teal escapee. The kickstart embeds a copy — keep them in sync.
-Mark updated after build 2; next build picks it up (no rebuild done yet).
+Three-tone mark confirmed on-screen in build 3 (welcome dialog + dock).
 Two earlier concepts (literal letter-P; aurora-ring/horizon-shift alternates)
 were rejected — don't resurrect them.
 
@@ -59,11 +59,24 @@ retired). Locale now en_CA.UTF-8 + America/Toronto (Elliott's decision).
 Kickstart is hermetic — SVG assets embedded in %post, keep in sync with
 branding/ (TODO: move to paradigmos-{backgrounds,logos} RPMs by v1).
 
+**BUILD 3 VERIFIED 2026-07-10 — FLAGSHIP ACCESSIBILITY ENTRY SHIPPED**
+(screenshots docs/screenshots/build3-*, speech proof build3-orca-speech.ogg):
+boot menus (BIOS+UEFI, both GRUB2 — F44 lorax dropped isolinux) carry
+"Start ParadigmOS 1.0 with screen reader (press S)", hotkey `s`, inserted
+by build/patch-lorax-a11y.py at build time. It adds kernel arg
+paradigmos.a11y=screenreader; paradigmos-a11y-boot.service (kickstart
+%post) flips the GNOME screen-reader default before GDM starts. QEMU
+smoke test now records guest audio and FAILED-if-silent: build 3 captured
+26s of real Orca speech (peak 29970/32767). An anaconda post-script
+(/usr/share/anaconda/post-scripts/70-paradigmos-a11y.ks) carries the
+setting onto installed systems — that install path is NOT yet tested (no
+VM install run yet). Build-3 gotchas now guarded in the build script:
+pykickstart parses %-section lines even inside heredocs (use @POST@/@END@
+placeholders + sed), and ksvalidator needs the pykickstart package.
+
 Remaining known work:
-- Persistent dock (Dash-to-Dock) — verification pending from desktop shot;
-  extension enablement via dconf may need per-session check.
-- Accessibility boot entry / Orca discoverability — the flagship feature,
-  own design pass. Live session Orca toggle: Super+Alt+S.
+- Test the install flow in a VM: Anaconda + Orca, and that the a11y
+  post-script really carries speech onto the installed system.
 - GNOME theme pass (branded + high-contrast variants); Plymouth splash;
   NVIDIA driver strategy; snapshot tooling (snapper/btrfs-assistant).
 - pkill gotcha: never `pkill -f qemu...` from a wsl.exe bash -lc one-liner
@@ -77,11 +90,10 @@ grounds must avoid pure white/black and carry real colour, blue included.
 
 Next up (in order):
 1. Finalize mark + wallpaper from Elliott's picks; more wallpaper variants.
-2. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
+2. VM install test (Anaconda flow + a11y carry-over, see above).
+3. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
    hooks, GNOME theme + high-contrast variant, Plymouth, snapshot tooling,
    backgrounds RPM instead of build-time curl).
-3. First ISO build + VM test-boot: verify Orca from boot menu, install flow,
-   branding. Expect iteration.
 
 Deferred by design: website/domain (~v1); update cadence (post-v1, leaning
 12-month major cycle).
