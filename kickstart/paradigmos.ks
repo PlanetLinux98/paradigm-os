@@ -298,6 +298,60 @@ toolkit-accessibility=true
 EOF
 dconf update
 
+# ---- Accessibility: screen-reader boot entry plumbing ----
+# The ISO boot menus (BIOS + UEFI) carry a "Start ... with screen reader
+# (press S)" entry — added by build/patch-lorax-a11y.py at ISO build time —
+# whose only difference is the kernel arg paradigmos.a11y=screenreader.
+# This service notices that arg before GDM starts and flips the GNOME
+# screen-reader default on system-wide, so Orca is already talking when the
+# live session (and the installer inside it) comes up. Without the arg the
+# service is inert; Super+Alt+S still toggles Orca manually either way.
+mkdir -p /usr/libexec/paradigmos
+cat > /usr/libexec/paradigmos/a11y-boot << 'EOF'
+#!/usr/bin/bash
+set -eu
+mkdir -p /etc/dconf/db/local.d
+cat > /etc/dconf/db/local.d/20-paradigmos-a11y << 'DCONF'
+[org/gnome/desktop/a11y/applications]
+screen-reader-enabled=true
+DCONF
+dconf update
+EOF
+chmod +x /usr/libexec/paradigmos/a11y-boot
+
+cat > /etc/systemd/system/paradigmos-a11y-boot.service << 'EOF'
+[Unit]
+Description=Enable the screen reader when booted with paradigmos.a11y=screenreader
+ConditionKernelCommandLine=paradigmos.a11y=screenreader
+Before=display-manager.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/paradigmos/a11y-boot
+
+[Install]
+WantedBy=graphical.target
+EOF
+systemctl enable paradigmos-a11y-boot.service
+
+# A live install copies the pristine image, not the running overlay, so the
+# dconf flip above would NOT survive onto the installed system by itself.
+# Anaconda runs every /usr/share/anaconda/post-scripts/*.ks at install time
+# (livesys-scripts uses the same hook to remove the live user): if this
+# install was started from a speaking session, make the installed system
+# speak from its first boot too — including gnome-initial-setup.
+mkdir -p /usr/share/anaconda/post-scripts
+cat > /usr/share/anaconda/post-scripts/70-paradigmos-a11y.ks << 'EOF'
+%post --nochroot
+if grep -q 'paradigmos.a11y=screenreader' /proc/cmdline; then
+    mkdir -p "$ANA_INSTALL_PATH/etc/dconf/db/local.d"
+    cp /etc/dconf/db/local.d/20-paradigmos-a11y \
+       "$ANA_INSTALL_PATH/etc/dconf/db/local.d/20-paradigmos-a11y"
+    chroot "$ANA_INSTALL_PATH" dconf update
+fi
+%end
+EOF
+
 # ---- Default file associations: VLC handles media ----
 mkdir -p /usr/share/applications
 cat > /usr/share/applications/paradigmos-mimeapps.list << 'EOF'
@@ -321,7 +375,7 @@ EOF
 # here as an explicit spec commitment.
 
 # TODO(anaconda-branding): welcome banner + installer product name via the
-#   supported hooks; verify the Orca boot-menu entry in the lorax templates.
+#   supported hooks.
 # TODO(theme): branded GNOME theme + first-class high-contrast variant.
 # TODO(plymouth): ParadigmOS boot splash.
 # TODO(snapshots): preinstall and configure btrfs snapshot tooling (snapper

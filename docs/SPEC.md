@@ -27,6 +27,16 @@ forward; update it as decisions evolve.
 - **Live session & installer:** Orca is launchable immediately from the boot menu,
   before Anaconda even starts, and stays available identically through install and
   first-run setup.
+- **How (decided 2026-07-10):** every ISO's boot menu — BIOS and UEFI — carries a
+  dedicated entry, **"Start ParadigmOS 1.0 with screen reader (press S)"**, placed
+  right below the default entry. Pressing `S` boots it directly: no arrow keys, no
+  sight needed (pressing `↓` then `Enter` from the default works too). The entry
+  adds the kernel argument `paradigmos.a11y=screenreader`; a boot-time service
+  flips GNOME's screen-reader default on system-wide before GDM starts, so Orca is
+  already talking when the live session appears. Installing from that session
+  carries the setting onto the installed system (via an Anaconda post-script), so
+  the first boot and `gnome-initial-setup` speak as well. In any session,
+  `Super+Alt+S` still toggles Orca manually.
 - **Installer choice:** Anaconda was chosen over the more easily-reskinned Calamares
   specifically because it has a proven, years-tested screen-reader workflow —
   Calamares does not.

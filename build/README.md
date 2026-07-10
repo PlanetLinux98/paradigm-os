@@ -16,6 +16,14 @@ bash build/build-iso.sh
 
 Output (ISO + logs) lands in `build/output/`, which is gitignored.
 
+Before assembling the ISO, `patch-lorax-a11y.py` edits lorax's live GRUB
+templates (BIOS and UEFI) to add the flagship accessibility boot entry:
+**"Start ParadigmOS 1.0 with screen reader (press S)"**. Pressing `s` at the
+boot menu boots with `paradigmos.a11y=screenreader`, which a systemd unit
+baked in by the kickstart turns into an Orca-speaking session before GDM
+starts. `smoke-test.sh` verifies the whole path end-to-end in QEMU by
+recording the guest's audio output and failing if it stays silent.
+
 ## Notes
 
 - The container needs `--privileged` because `--no-virt` loop-mounts the image

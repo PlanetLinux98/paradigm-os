@@ -34,6 +34,9 @@ docker run --rm --privileged \
   "fedora:${FEDORA_VERSION}" \
   bash -euxc "
     dnf install -y lorax-lmc-novirt policycoreutils
+    # Flagship accessibility: add the 'with screen reader (press S)' entry to
+    # the BIOS+UEFI boot menus before the ISO is assembled.
+    python3 build/patch-lorax-a11y.py
     livemedia-creator \
       --ks kickstart/paradigmos.ks \
       --no-virt \
