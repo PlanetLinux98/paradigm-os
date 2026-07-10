@@ -22,6 +22,10 @@ RESULT_DIR="${REPO_ROOT}/build/output/result"
 rm -rf "${RESULT_DIR}"
 mkdir -p "${REPO_ROOT}/build/output"
 
+# --releasever feeds the boot-menu title ("Start ParadigmOS 1.0") rather
+# than the Fedora release: safe here because every repo URL in the
+# kickstart is hardcoded — none rely on $releasever substitution.
+#
 # --privileged is required: livemedia-creator --no-virt loop-mounts images
 # and runs Anaconda directly inside the container.
 docker run --rm --privileged \
@@ -37,7 +41,7 @@ docker run --rm --privileged \
       --iso-only \
       --iso-name '${ISO_NAME}' \
       --project ParadigmOS \
-      --releasever ${FEDORA_VERSION} \
+      --releasever ${OS_VERSION} \
       --volid 'ParadigmOS-${OS_VERSION}' \
       --resultdir /paradigm/build/output/result \
       --logfile /paradigm/build/output/lmc-logs/livemedia.log

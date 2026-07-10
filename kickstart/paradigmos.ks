@@ -7,9 +7,12 @@
 # STATUS: first draft — expect iteration during the first real build.
 # TODO markers below are the known-open items.
 
-lang en_US.UTF-8
+# Canadian English default (Elliott's call, 2026-07-10): identity statement
+# only — Anaconda still asks every user for language on its first screen.
+# Keyboard stays US layout (standard for Canadian English hardware).
+lang en_CA.UTF-8
 keyboard us
-timezone America/New_York
+timezone America/Toronto
 selinux --enforcing
 firewall --enabled --service=mdns
 xconfig --startxonboot
@@ -123,14 +126,134 @@ VARIANT_ID=desktop
 EOF
 ln -sf ../usr/lib/os-release /etc/os-release
 
-# ---- Branding: wallpapers ----
-# Interim: pull current drafts from the public repo at build time.
-# TODO(packaging): replace with a paradigmos-backgrounds RPM before v1.
+# ---- Branding: wallpapers & logo ----
+# Assets embedded directly so the build is hermetic — no network fetch, no
+# risk of building against a stale GitHub main. Keep in sync with branding/
+# in the repo. TODO(packaging): paradigmos-{backgrounds,logos} RPMs by v1.
 mkdir -p /usr/share/backgrounds/paradigmos
-for f in aurora-1-light.svg aurora-1-dark.svg; do
-  curl -sfL "https://raw.githubusercontent.com/PlanetLinux98/paradigm-os/main/branding/wallpapers/$f" \
-    -o "/usr/share/backgrounds/paradigmos/$f" || echo "WARN: wallpaper $f not fetched"
-done
+cat > /usr/share/backgrounds/paradigmos/aurora-1-light.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Aurora 1 (light variant)</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E4F0F2"/>
+      <stop offset="0.5" stop-color="#D2E6EA"/>
+      <stop offset="1" stop-color="#B9D8DF"/>
+    </linearGradient>
+    <linearGradient id="band1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.10"/>
+      <stop offset="0.5" stop-color="#1B8A90" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#2B5D86" stop-opacity="0.16"/>
+    </linearGradient>
+    <linearGradient id="band2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2B5D86" stop-opacity="0.10"/>
+      <stop offset="0.6" stop-color="#2B5D86" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#1B8A90" stop-opacity="0.14"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1B8A90" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#17797E" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#2B5D86" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.72" r="0.55">
+      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#1B8A90" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washTeal" cx="0.12" cy="0.08" r="0.6">
+      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#1B8A90" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washBlue" cx="0.9" cy="0.15" r="0.65">
+      <stop offset="0" stop-color="#2B5D86" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#2B5D86" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="soft2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#washTeal)"/>
+  <rect width="1920" height="1080" fill="url(#washBlue)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <path d="M0,260 C620,150 1260,330 1920,190 L1920,0 L0,0 Z" fill="url(#band2)" opacity="0.6" filter="url(#soft)"/>
+  <path d="M0,780 C420,630 900,910 1380,720 C1630,620 1790,660 1920,590 L1920,1080 L0,1080 Z" fill="url(#band1)" filter="url(#soft)"/>
+  <path d="M0,920 C520,770 1040,1010 1500,850 C1700,780 1830,800 1920,750 L1920,1080 L0,1080 Z" fill="url(#band2)" filter="url(#soft)"/>
+  <path d="M-60,830 C480,660 980,890 1410,700 C1660,592 1830,640 1980,555" fill="none" stroke="url(#ribbon)" stroke-width="6" filter="url(#soft2)"/>
+  <path d="M-60,890 C500,740 1020,960 1450,790 C1690,698 1840,724 1980,655" fill="none" stroke="url(#ribbon)" stroke-width="3" opacity="0.8" filter="url(#soft2)"/>
+</svg>
+EOF
+cat > /usr/share/backgrounds/paradigmos/aurora-1-dark.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Aurora 1 (dark variant)</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#122834"/>
+      <stop offset="0.5" stop-color="#17374A"/>
+      <stop offset="1" stop-color="#1C4A5C"/>
+    </linearGradient>
+    <linearGradient id="band1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.08"/>
+      <stop offset="0.5" stop-color="#2FA3A9" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#2B5D86" stop-opacity="0.14"/>
+    </linearGradient>
+    <linearGradient id="band2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2B5D86" stop-opacity="0.10"/>
+      <stop offset="0.6" stop-color="#5F9CCF" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#1B8A90" stop-opacity="0.12"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2FA3A9" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#4FC7CD" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#5F9CCF" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.72" r="0.55">
+      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#1B8A90" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washBlue" cx="0.12" cy="0.1" r="0.65">
+      <stop offset="0" stop-color="#5F9CCF" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#5F9CCF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="soft2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#washBlue)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <path d="M0,260 C620,150 1260,330 1920,190 L1920,0 L0,0 Z" fill="url(#band2)" opacity="0.5" filter="url(#soft)"/>
+  <path d="M0,780 C420,630 900,910 1380,720 C1630,620 1790,660 1920,590 L1920,1080 L0,1080 Z" fill="url(#band1)" filter="url(#soft)"/>
+  <path d="M0,920 C520,770 1040,1010 1500,850 C1700,780 1830,800 1920,750 L1920,1080 L0,1080 Z" fill="url(#band2)" filter="url(#soft)"/>
+  <path d="M-60,830 C480,660 980,890 1410,700 C1660,592 1830,640 1980,555" fill="none" stroke="url(#ribbon)" stroke-width="6" filter="url(#soft2)"/>
+  <path d="M-60,890 C500,740 1020,960 1450,790 C1690,698 1840,724 1980,655" fill="none" stroke="url(#ribbon)" stroke-width="3" opacity="0.75" filter="url(#soft2)"/>
+</svg>
+EOF
+
+# The shifted-tile mark, installed under our own icon name (matching
+# os-release LOGO=paradigmos-logo) and also as fedora-logo-icon — the name
+# anaconda's desktop entry references; without it the installer shows
+# anaconda's hot-dog placeholder icon.
+mkdir -p /usr/share/icons/hicolor/scalable/apps
+cat > /usr/share/icons/hicolor/scalable/apps/paradigmos-logo.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <title>ParadigmOS mark — "Shifted tile"</title>
+  <g fill="#1F4A6E">
+    <rect x="16" y="16" width="24" height="24" rx="6"/>
+    <rect x="48" y="16" width="24" height="24" rx="6"/>
+    <rect x="16" y="48" width="24" height="24" rx="6"/>
+    <rect x="48" y="48" width="24" height="24" rx="6"/>
+    <rect x="16" y="80" width="24" height="24" rx="6"/>
+  </g>
+  <g fill="#2B5D86">
+    <rect x="80" y="48" width="24" height="24" rx="6"/>
+    <rect x="48" y="80" width="24" height="24" rx="6"/>
+    <rect x="80" y="80" width="24" height="24" rx="6"/>
+  </g>
+  <rect x="80" y="16" width="24" height="24" rx="6" fill="#1B8A90"
+        transform="translate(9,-7) rotate(14 92 28)"/>
+</svg>
+EOF
+cp /usr/share/icons/hicolor/scalable/apps/paradigmos-logo.svg \
+   /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.svg
+gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 
 mkdir -p /usr/share/gnome-background-properties
 cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
@@ -150,6 +273,15 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
 EOF
 
 # ---- Desktop defaults (dconf) ----
+# System defaults only apply if a profile chains the system database —
+# Fedora ships no such profile, so without this file every key below is
+# silently ignored (confirmed by the first boot test: plain blue desktop).
+mkdir -p /etc/dconf/profile
+cat > /etc/dconf/profile/user << 'EOF'
+user-db:user
+system-db:local
+EOF
+
 mkdir -p /etc/dconf/db/local.d
 cat > /etc/dconf/db/local.d/00-paradigmos << 'EOF'
 [org/gnome/desktop/background]
