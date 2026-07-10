@@ -1,0 +1,7 @@
+# These files execute inside Linux (container/ISO) — CRLF would break them.
+*.sh text eol=lf
+*.ks text eol=lf
+*.svg text eol=lf
+
+# Sensible default for everything else
+* text=auto
