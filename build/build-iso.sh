@@ -33,7 +33,7 @@ docker run --rm --privileged \
   -w /paradigm \
   "fedora:${FEDORA_VERSION}" \
   bash -euxc "
-    dnf install -y lorax-lmc-novirt policycoreutils
+    dnf install -y lorax-lmc-novirt policycoreutils pykickstart
     # Fail on kickstart parse errors up front instead of mid-run (build 3
     # died on one after the full toolchain install).
     ksvalidator -v F44 kickstart/paradigmos.ks
