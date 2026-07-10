@@ -13,7 +13,11 @@ FEDORA_VERSION=44
 OS_VERSION="1.0"
 CODENAME="Aurora"
 ISO_NAME="ParadigmOS-${OS_VERSION}-${CODENAME}-x86_64.iso"
+RESULT_DIR="${REPO_ROOT}/build/output/result"
 
+# livemedia-creator refuses to start if the result dir exists at all,
+# so clear leftovers from any previous attempt.
+rm -rf "${RESULT_DIR}"
 mkdir -p "${REPO_ROOT}/build/output"
 
 # --privileged is required: livemedia-creator --no-virt loop-mounts images
@@ -37,5 +41,11 @@ docker run --rm --privileged \
       --logfile /paradigm/build/output/lmc-logs/livemedia.log
   "
 
-echo
-echo \"Done. ISO (if the build succeeded): build/output/result/${ISO_NAME}\"
+# livemedia-creator exits 0 on some early aborts, so the ISO's existence is
+# the only trustworthy success signal.
+if [[ -f "${RESULT_DIR}/${ISO_NAME}" ]]; then
+  echo "BUILD SUCCEEDED: ${RESULT_DIR}/${ISO_NAME}"
+else
+  echo "BUILD FAILED: no ISO at ${RESULT_DIR}/${ISO_NAME} — check build/output/lmc-logs/" >&2
+  exit 1
+fi
