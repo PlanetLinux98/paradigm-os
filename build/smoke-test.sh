@@ -28,10 +28,22 @@ shot() {
   echo "captured $1"
 }
 
+mon() {
+  echo "$1" | socat - "UNIX-CONNECT:${MON}"
+  sleep 2
+}
+
 sleep 25
 shot paradigmos-boot-menu.png
 
 sleep 240
 shot paradigmos-live.png
+
+# Dismiss the welcome dialog and the overview for a clean desktop shot
+# (verifies wallpaper and whether the persistent dock is active).
+mon "sendkey alt-f4"
+mon "sendkey esc"
+sleep 4
+shot paradigmos-desktop.png
 
 echo "SMOKE TEST SHOTS DONE in $OUT (qemu pid ${QEMU_PID} left running for more shots)"
