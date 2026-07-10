@@ -235,7 +235,7 @@ mkdir -p /usr/share/icons/hicolor/scalable/apps
 cat > /usr/share/icons/hicolor/scalable/apps/paradigmos-logo.svg << 'EOF'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
   <title>ParadigmOS mark — "Shifted tile"</title>
-  <g fill="#1A3F5F">
+  <g fill="#1F4A6E">
     <rect x="16" y="16" width="24" height="24" rx="6"/>
     <rect x="48" y="16" width="24" height="24" rx="6"/>
     <rect x="16" y="48" width="24" height="24" rx="6"/>

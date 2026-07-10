@@ -63,7 +63,9 @@ The cool teal/blue palette is confirmed. The mark is decided: **"Shifted tile"**
 (`branding/icons/paradigmos-mark.svg`) — a 3×3 grid of rounded tiles where the
 top-right tile turns teal, rotates, and escapes the grid (the paradigm shift).
 Per Elliott's refinement idea, the five tiles of column 1 + top two of column 2
-sit a shade darker (#1A3F5F), tracing a subtle letter **P**. (An earlier
+sit darker (#1F4A6E), tracing a subtle letter **P**; the three non-P grid tiles
+sit lighter (#4A8ABD). Settled 2026-07-10 after two rounds: Elliott kept the
+original P shade and only lightened the grid tiles. (An earlier
 literal letter-P concept and two alternates — aurora-ring, horizon-shift — were
 explored and rejected; they survive in git history.)
 
@@ -81,7 +83,7 @@ varying designs that stay within these style rules. Proposals live in
 |---|---|---|
 | Teal (primary) | `#2190A4` | Primary accent — deliberately identical to GNOME's built-in `teal` accent colour (Elliott, 2026-07-10), so the supported accent system matches the brand exactly |
 | Deep Blue | `#2B5D86` | Secondary accent |
-| Deep Blue (shade) | `#1A3F5F` | The mark's P-tiles |
+| Deep Blue (shade) | `#1F4A6E` | The mark's P-tiles |
 | Deep Blue (light shade) | `#4A8ABD` | The mark's non-P grid tiles |
 | Ink | `#12262B` | Text (light mode) |
 | Paper | `#F5F9FA` | Background (light mode) |
@@ -90,7 +92,7 @@ varying designs that stay within these style rules. Proposals live in
 | Decision | Choice | Why it matters |
 |---|---|---|
 | Wallpaper | Rotating set, paired light/dark variants; sweeping gradient "aurora" style, saturated grounds (no pure white/black) | Set 1 approved (2026-07-10); 3–4 more sets in varying designs to follow, then Elliott picks the rotation. |
-| Wordmark / mark | "Shifted tile" — three-tone 3×3 grid: dark navy P-tiles (#1A3F5F), lighter grid tiles (#4A8ABD), escaping teal tile | Elliott picked the concept, the darker-tile P detail, and the lighter grid tiles (2026-07-10) so the P differentiates clearly. |
+| Wordmark / mark | "Shifted tile" — three-tone 3×3 grid: dark navy P-tiles (#1F4A6E), lighter grid tiles (#4A8ABD), escaping teal tile (#2190A4) | Elliott picked the concept and settled the tones over two rounds (2026-07-10): P-tiles keep their original shade, grid tiles go lighter, so the P differentiates without darkening. |
 | Versioning | Independent version number + codename | Decoupled from the underlying Fedora version, shown in fine print only. |
 | Codename scheme | Abstract/aspirational words, alphabetical across releases | v1.0 proposed as **"Aurora"**; v2.0 would be a B-word, and so on. |
 

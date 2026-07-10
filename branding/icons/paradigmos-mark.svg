@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
   <title>ParadigmOS mark — "Shifted tile": a 3×3 grid where one tile breaks the pattern; five darker tiles trace a subtle P</title>
   <!-- Five darker tiles (column 1 + top two of column 2) trace a subtle letter P -->
-  <g fill="#1A3F5F">
+  <g fill="#1F4A6E">
     <rect x="16" y="16" width="24" height="24" rx="6"/>
     <rect x="48" y="16" width="24" height="24" rx="6"/>
     <rect x="16" y="48" width="24" height="24" rx="6"/>

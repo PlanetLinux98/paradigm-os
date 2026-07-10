@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
-  <title>ParadigmOS wallpaper — Shift (light variant): drifting rounded tiles echoing the mark, one teal escapee</title>
+  <title>ParadigmOS wallpaper — Shift (light variant, rev 2): light teal ground, drifting rounded tiles, one teal escapee</title>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#DCEAF3"/>
-      <stop offset="0.55" stop-color="#C6DDEC"/>
-      <stop offset="1" stop-color="#AECFE3"/>
+      <stop offset="0" stop-color="#C6E7E6"/>
+      <stop offset="0.55" stop-color="#B0DBDD"/>
+      <stop offset="1" stop-color="#9CCED6"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.74" cy="0.78" r="0.6">
       <stop offset="0" stop-color="#2190A4" stop-opacity="0.20"/>
