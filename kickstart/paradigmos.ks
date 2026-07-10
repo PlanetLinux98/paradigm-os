@@ -44,6 +44,16 @@ anaconda
 anaconda-live
 @anaconda-tools
 
+# Live-boot essentials (livemedia-creator aborts without dracut-live; the
+# rest are the standard Fedora live-media boot stack pulled from the built
+# rootfs by the lorax live templates)
+dracut-live
+grub2-efi-x64
+grub2-efi-x64-cdboot
+shim-x64
+syslinux
+isomd5sum
+
 # Per spec: office suite preinstalled (no longer in stock Workstation default)
 libreoffice
 
