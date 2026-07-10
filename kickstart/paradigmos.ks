@@ -27,7 +27,9 @@ shutdown
 # --- Repositories -----------------------------------------------------------
 # Fedora proper + updates, plus RPM Fusion (free and nonfree) per the spec:
 # codecs and NVIDIA driver availability out of the box.
-repo --name=fedora --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-44&arch=x86_64
+# livemedia-creator requires the primary install source as a `url` command;
+# additional `repo` lines are only allowed alongside it.
+url --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-44&arch=x86_64
 repo --name=updates --mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f44&arch=x86_64
 repo --name=rpmfusion-free --mirrorlist=https://mirrors.rpmfusion.org/mirrorlist?repo=free-fedora-44&arch=x86_64
 repo --name=rpmfusion-free-updates --mirrorlist=https://mirrors.rpmfusion.org/mirrorlist?repo=free-fedora-updates-released-44&arch=x86_64
