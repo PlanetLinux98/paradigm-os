@@ -49,13 +49,18 @@ forward; update it as decisions evolve.
 
 ## Visual identity
 
-The cool teal/blue palette is confirmed. The wallpapers use a sweeping, Vista-like
-gradient "aurora" direction (confirmed); the light variant is on draft 2 after
-feedback that draft 1 was too white (deeper teal-tinted ground + corner wash).
-The mark is **under exploration**: the first letter-P concept was rejected
-(2026-07-10); three fresh candidates live in `branding/icons/concepts/` —
-A "Shifted tile" (grid with one escaping tile), B "Aurora ring" (open ring +
-ribbon tail), C "Horizon shift" (two slipped half-discs).
+The cool teal/blue palette is confirmed. The mark is decided: **"Shifted tile"**
+(`branding/icons/paradigmos-mark.svg`) — a 3×3 grid of rounded tiles where the
+top-right tile turns teal, rotates, and escapes the grid (the paradigm shift).
+Per Elliott's refinement idea, the five tiles of column 1 + top two of column 2
+sit a shade darker (#1F4A6E), tracing a subtle letter **P**. (An earlier
+literal letter-P concept and two alternates — aurora-ring, horizon-shift — were
+explored and rejected; they survive in git history.)
+
+The wallpapers use a sweeping, Vista-like gradient "aurora" direction
+(confirmed). Grounds must avoid pure whites and pure blacks and carry real
+colour, blue included — per Elliott's feedback on the first two passes. Current:
+light draft 3, dark draft 2, in `branding/wallpapers/`.
 
 **Palette**
 
@@ -63,14 +68,15 @@ ribbon tail), C "Horizon shift" (two slipped half-discs).
 |---|---|---|
 | Teal (primary) | `#1B8A90` | Primary accent |
 | Deep Blue | `#2B5D86` | Secondary accent |
+| Deep Blue (shade) | `#1F4A6E` | The mark's P-tiles |
 | Ink | `#12262B` | Text (light mode) |
 | Paper | `#F5F9FA` | Background (light mode) |
 | Flag / semantic | `#A4501F` | "Needs attention" markers only, never used as brand accent |
 
 | Decision | Choice | Why it matters |
 |---|---|---|
-| Wallpaper | Rotating set, paired light/dark variants; sweeping gradient "aurora" style (Vista-like) | Direction confirmed by Elliott; light variant on draft 2 (less white, teal accent). More variants to follow for the rotating set. |
-| Wordmark / mark | Under exploration — candidates A/B/C in `branding/icons/concepts/` | Letter-P concept rejected 2026-07-10; awaiting Elliott's pick of direction before final logo work. |
+| Wallpaper | Rotating set, paired light/dark variants; sweeping gradient "aurora" style, saturated grounds (no pure white/black) | Direction confirmed; third colour pass (light draft 3, dark draft 2) awaiting Elliott's reaction. More variants to follow for the rotating set. |
+| Wordmark / mark | "Shifted tile" — 3×3 grid, escaping teal tile, darker tiles tracing a subtle P | Elliott picked the concept and suggested the darker-tile P detail; shading refinement awaiting his reaction. |
 | Versioning | Independent version number + codename | Decoupled from the underlying Fedora version, shown in fine print only. |
 | Codename scheme | Abstract/aspirational words, alphabetical across releases | v1.0 proposed as **"Aurora"**; v2.0 would be a B-word, and so on. |
 
@@ -116,9 +122,8 @@ ribbon tail), C "Horizon shift" (two slipped half-discs).
 
 ## Open items
 
-- **Needs Elliott's pick:** mark direction — A (Shifted tile), B (Aurora ring),
-  or C (Horizon shift), in `branding/icons/concepts/`.
-- **Awaiting Elliott's reaction:** light wallpaper draft 2.
+- **Awaiting Elliott's reaction:** the darker-P-tile shading on the mark, and
+  the third wallpaper colour pass (light draft 3, dark draft 2).
 - **Deliberately deferred:** exact update-cadence commitment (revisit after v1
   ships; leaning ~12-month major cycle) and the website/domain (revisit
   approaching v1).

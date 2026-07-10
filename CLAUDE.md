@@ -35,14 +35,16 @@ visual polish.
 
 ## Current status (update this section as work proceeds — last: 2026-07-10)
 
-Done: spec finalized (v0.3); repo public at PlanetLinux98/paradigm-os; first
+Done: spec finalized (v0.4); repo public at PlanetLinux98/paradigm-os; first
 kickstart draft (`kickstart/paradigmos.ks`) and containerized build script
-committed; aurora wallpaper pair drafted (light variant on draft 2 after
-"too white" feedback).
+committed. Mark decided: "Shifted tile" (branding/icons/paradigmos-mark.svg)
+with five darker tiles tracing a subtle P — Elliott's own refinement idea.
+Two earlier concepts (literal letter-P; aurora-ring/horizon-shift alternates)
+were rejected — don't resurrect them.
 
-Awaiting Elliott: logo direction — first P-mark concept was REJECTED; three
-candidates in `branding/icons/concepts/` (A shifted-tile, B aurora-ring,
-C horizon-shift). Light wallpaper draft 2 awaiting reaction.
+Awaiting Elliott: reaction to the darker-P-tile shading and to the third
+wallpaper colour pass (light draft 3, dark draft 2). Standing art direction:
+grounds must avoid pure white/black and carry real colour, blue included.
 
 Next up (in order):
 1. Finalize mark + wallpaper from Elliott's picks; more wallpaper variants.
