@@ -42,13 +42,27 @@ with five darker tiles tracing a subtle P — Elliott's own refinement idea.
 Two earlier concepts (literal letter-P; aurora-ring/horizon-shift alternates)
 were rejected — don't resurrect them.
 
-**FIRST ISO BUILT 2026-07-10**: ParadigmOS-1.0-Aurora-x86_64.iso (2.7 GB),
-after 5 attempts (fixes each documented in git log: dracut-live, stale result
-dir, url install method, rootpw --lock). Built in /root/paradigm-os inside
-WSL (build there, NOT /mnt/c — drvfs breaks loop mounts; sync via
-`git pull /mnt/c/Users/Elliott/ParadigmOS main`). Copy of ISO at
-build/output/ on the Windows side (gitignored). QEMU/KVM smoke test works
-inside WSL (qemu-system-x86, socat, imagemagick installed).
+**FIRST ISO BUILT AND BOOT-TESTED 2026-07-10**: ParadigmOS-1.0-Aurora-x86_64.iso
+(2.7 GB), after 5 attempts (fixes each documented in git log: dracut-live,
+stale result dir, url install method, rootpw --lock). Built in
+/root/paradigm-os inside WSL (build there, NOT /mnt/c — drvfs breaks loop
+mounts; sync via `git pull /mnt/c/Users/Elliott/ParadigmOS main`). ISO copy
+at build/output/ on the Windows side (gitignored). QEMU/KVM smoke test:
+`bash build/smoke-test.sh` inside WSL (screenshots in docs/screenshots/).
+
+Smoke-test findings (the current fix list):
+- BOOTS to GNOME live session; "Welcome to ParadigmOS" dialog — os-release
+  rebrand works.
+- Installer icon is anaconda's hot-dog placeholder: need a paradigmos-logos
+  package providing the icon names (os-release LOGO=paradigmos-logo).
+- Wallpaper/dock/a11y dconf defaults DID NOT APPLY: /etc/dconf/profile/user
+  must be created with "user-db:user / system-db:local" for local.d to take
+  effect — classic gotcha, fix in %post.
+- Boot menu reads "ParadigmOS 44" (lorax uses releasever) — want "1.0";
+  needs lorax template override or ISO grub.cfg post-process.
+- No dedicated accessibility boot entry yet — design in a11y polish phase.
+- pkill gotcha: never `pkill -f qemu...` from a wsl.exe bash -lc one-liner
+  (pattern matches the shell's own cmdline and self-terminates, exit 15).
 
 Awaiting Elliott: reaction to the darker-P-tile shading and to the third
 wallpaper colour pass (light draft 3, dark draft 2). Standing art direction:
