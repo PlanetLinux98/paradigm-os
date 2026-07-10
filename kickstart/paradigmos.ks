@@ -340,17 +340,22 @@ systemctl enable paradigmos-a11y-boot.service
 # (livesys-scripts uses the same hook to remove the live user): if this
 # install was started from a speaking session, make the installed system
 # speak from its first boot too — including gnome-initial-setup.
+# (Written with @POST@/@END@ placeholders because pykickstart's section
+# parser is line-based and would treat literal %post/%end lines inside this
+# heredoc as terminating THIS %post section — build 3 failed exactly there.)
 mkdir -p /usr/share/anaconda/post-scripts
 cat > /usr/share/anaconda/post-scripts/70-paradigmos-a11y.ks << 'EOF'
-%post --nochroot
+@POST@ --nochroot
 if grep -q 'paradigmos.a11y=screenreader' /proc/cmdline; then
     mkdir -p "$ANA_INSTALL_PATH/etc/dconf/db/local.d"
     cp /etc/dconf/db/local.d/20-paradigmos-a11y \
        "$ANA_INSTALL_PATH/etc/dconf/db/local.d/20-paradigmos-a11y"
     chroot "$ANA_INSTALL_PATH" dconf update
 fi
-%end
+@END@
 EOF
+sed -i 's/^@POST@/%post/; s/^@END@/%end/' \
+    /usr/share/anaconda/post-scripts/70-paradigmos-a11y.ks
 
 # ---- Default file associations: VLC handles media ----
 mkdir -p /usr/share/applications
