@@ -21,7 +21,10 @@ clearpart --all
 part / --size 16384 --fstype ext4
 services --enabled=NetworkManager,ModemManager --disabled=sshd
 network --bootproto=dhcp --device=link --activate
-rootpw --lock --iscrypted locked
+# Locked root account, no password set. (The older idiom
+# `--iscrypted locked` fails validation in current anaconda:
+# "Unable to set password for new user: status=1".)
+rootpw --lock
 shutdown
 
 # --- Repositories -----------------------------------------------------------

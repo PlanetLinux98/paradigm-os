@@ -29,7 +29,7 @@ docker run --rm --privileged \
   -w /paradigm \
   "fedora:${FEDORA_VERSION}" \
   bash -euxc "
-    dnf install -y lorax-lmc-novirt
+    dnf install -y lorax-lmc-novirt policycoreutils
     livemedia-creator \
       --ks kickstart/paradigmos.ks \
       --no-virt \
