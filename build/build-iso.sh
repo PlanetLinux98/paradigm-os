@@ -6,7 +6,9 @@
 #
 # Output lands in build/output/ (gitignored).
 
-set -euo pipefail
+# -x tracing: the outer steps are few, and the trace has already been needed
+# once to debug silent-success behavior in the container plumbing.
+set -euxo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 FEDORA_VERSION=44
