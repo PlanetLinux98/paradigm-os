@@ -49,11 +49,13 @@ forward; update it as decisions evolve.
 
 ## Visual identity
 
-The cool teal/blue palette is confirmed. Per Elliott's feedback (2026-07-10), the
-mark was revised from two abstract planes into a letter **P** built from those same
-two shifted planes — tying it directly to the name — and the wallpapers took a
-sweeping, Vista-like gradient "aurora" direction. First drafts live in
-`branding/icons/paradigmos-mark.svg` and `branding/wallpapers/aurora-1-{light,dark}.svg`.
+The cool teal/blue palette is confirmed. The wallpapers use a sweeping, Vista-like
+gradient "aurora" direction (confirmed); the light variant is on draft 2 after
+feedback that draft 1 was too white (deeper teal-tinted ground + corner wash).
+The mark is **under exploration**: the first letter-P concept was rejected
+(2026-07-10); three fresh candidates live in `branding/icons/concepts/` —
+A "Shifted tile" (grid with one escaping tile), B "Aurora ring" (open ring +
+ribbon tail), C "Horizon shift" (two slipped half-discs).
 
 **Palette**
 
@@ -67,8 +69,8 @@ sweeping, Vista-like gradient "aurora" direction. First drafts live in
 
 | Decision | Choice | Why it matters |
 |---|---|---|
-| Wallpaper | Rotating set, paired light/dark variants; sweeping gradient "aurora" style (Vista-like) | Direction confirmed by Elliott; first light/dark draft pair in `branding/wallpapers/`, more variants to follow for the rotating set. |
-| Wordmark / mark | Letter-P mark built from two shifted planes + geometric sans wordmark | Revised per Elliott's feedback to visibly invoke the name; still literalizes "paradigm shift," still legible at favicon size and in high-contrast mode. |
+| Wallpaper | Rotating set, paired light/dark variants; sweeping gradient "aurora" style (Vista-like) | Direction confirmed by Elliott; light variant on draft 2 (less white, teal accent). More variants to follow for the rotating set. |
+| Wordmark / mark | Under exploration — candidates A/B/C in `branding/icons/concepts/` | Letter-P concept rejected 2026-07-10; awaiting Elliott's pick of direction before final logo work. |
 | Versioning | Independent version number + codename | Decoupled from the underlying Fedora version, shown in fine print only. |
 | Codename scheme | Abstract/aspirational words, alphabetical across releases | v1.0 proposed as **"Aurora"**; v2.0 would be a B-word, and so on. |
 
@@ -114,8 +116,9 @@ sweeping, Vista-like gradient "aurora" direction. First drafts live in
 
 ## Open items
 
-- **Awaiting Elliott's reaction:** the revised letter-P mark and the first aurora
-  wallpaper pair (drafts in `branding/`).
+- **Needs Elliott's pick:** mark direction — A (Shifted tile), B (Aurora ring),
+  or C (Horizon shift), in `branding/icons/concepts/`.
+- **Awaiting Elliott's reaction:** light wallpaper draft 2.
 - **Deliberately deferred:** exact update-cadence commitment (revisit after v1
   ships; leaning ~12-month major cycle) and the website/domain (revisit
   approaching v1).

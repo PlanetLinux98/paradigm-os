@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <title>Mark concept B — "Aurora ring": an open ring with a ribbon tail, echoing the wallpaper aurora</title>
+  <defs>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1B8A90"/>
+      <stop offset="1" stop-color="#2B5D86"/>
+    </linearGradient>
+  </defs>
+  <!-- Open ring (a nod to "OS"), gap at the upper right -->
+  <path d="M 88,32 A 40,40 0 1 0 99,54" fill="none" stroke="url(#ring)"
+        stroke-width="14" stroke-linecap="round"/>
+  <!-- Ribbon tail escaping the ring through the gap -->
+  <path d="M 99,54 C 106,40 112,30 118,24" fill="none" stroke="#1B8A90"
+        stroke-width="14" stroke-linecap="round" opacity="0.55"/>
+</svg>

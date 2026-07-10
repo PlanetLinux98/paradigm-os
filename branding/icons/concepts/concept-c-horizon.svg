@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <title>Mark concept C — "Horizon shift": two half-discs slipped past each other along a horizon line</title>
+  <!-- Upper half-disc, shifted right, teal -->
+  <path d="M 30,56 A 36,36 0 0 1 102,56 Z" fill="#1B8A90"/>
+  <!-- Lower half-disc, shifted left, deep blue -->
+  <path d="M 18,64 A 36,36 0 0 0 90,64 Z" fill="#2B5D86"/>
+</svg>
