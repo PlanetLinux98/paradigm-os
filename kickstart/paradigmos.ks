@@ -141,27 +141,27 @@ cat > /usr/share/backgrounds/paradigmos/aurora-1-light.svg << 'EOF'
       <stop offset="1" stop-color="#B9D8DF"/>
     </linearGradient>
     <linearGradient id="band1" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.10"/>
-      <stop offset="0.5" stop-color="#1B8A90" stop-opacity="0.36"/>
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.10"/>
+      <stop offset="0.5" stop-color="#2190A4" stop-opacity="0.36"/>
       <stop offset="1" stop-color="#2B5D86" stop-opacity="0.16"/>
     </linearGradient>
     <linearGradient id="band2" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#2B5D86" stop-opacity="0.10"/>
       <stop offset="0.6" stop-color="#2B5D86" stop-opacity="0.32"/>
-      <stop offset="1" stop-color="#1B8A90" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0.14"/>
     </linearGradient>
     <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#1B8A90" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#17797E" stop-opacity="0.75"/>
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#176E7E" stop-opacity="0.75"/>
       <stop offset="1" stop-color="#2B5D86" stop-opacity="0"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.78" cy="0.72" r="0.55">
-      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.24"/>
-      <stop offset="1" stop-color="#1B8A90" stop-opacity="0"/>
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="washTeal" cx="0.12" cy="0.08" r="0.6">
-      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.18"/>
-      <stop offset="1" stop-color="#1B8A90" stop-opacity="0"/>
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="washBlue" cx="0.9" cy="0.15" r="0.65">
       <stop offset="0" stop-color="#2B5D86" stop-opacity="0.18"/>
@@ -191,23 +191,23 @@ cat > /usr/share/backgrounds/paradigmos/aurora-1-dark.svg << 'EOF'
       <stop offset="1" stop-color="#1C4A5C"/>
     </linearGradient>
     <linearGradient id="band1" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.08"/>
-      <stop offset="0.5" stop-color="#2FA3A9" stop-opacity="0.36"/>
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.08"/>
+      <stop offset="0.5" stop-color="#2F97A9" stop-opacity="0.36"/>
       <stop offset="1" stop-color="#2B5D86" stop-opacity="0.14"/>
     </linearGradient>
     <linearGradient id="band2" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#2B5D86" stop-opacity="0.10"/>
       <stop offset="0.6" stop-color="#5F9CCF" stop-opacity="0.32"/>
-      <stop offset="1" stop-color="#1B8A90" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0.12"/>
     </linearGradient>
     <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#2FA3A9" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#4FC7CD" stop-opacity="0.9"/>
+      <stop offset="0" stop-color="#2F97A9" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#4FBACD" stop-opacity="0.9"/>
       <stop offset="1" stop-color="#5F9CCF" stop-opacity="0"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.78" cy="0.72" r="0.55">
-      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.36"/>
-      <stop offset="1" stop-color="#1B8A90" stop-opacity="0"/>
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="washBlue" cx="0.12" cy="0.1" r="0.65">
       <stop offset="0" stop-color="#5F9CCF" stop-opacity="0.20"/>
@@ -235,19 +235,19 @@ mkdir -p /usr/share/icons/hicolor/scalable/apps
 cat > /usr/share/icons/hicolor/scalable/apps/paradigmos-logo.svg << 'EOF'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
   <title>ParadigmOS mark — "Shifted tile"</title>
-  <g fill="#1F4A6E">
+  <g fill="#1A3F5F">
     <rect x="16" y="16" width="24" height="24" rx="6"/>
     <rect x="48" y="16" width="24" height="24" rx="6"/>
     <rect x="16" y="48" width="24" height="24" rx="6"/>
     <rect x="48" y="48" width="24" height="24" rx="6"/>
     <rect x="16" y="80" width="24" height="24" rx="6"/>
   </g>
-  <g fill="#3A76A8">
+  <g fill="#4A8ABD">
     <rect x="80" y="48" width="24" height="24" rx="6"/>
     <rect x="48" y="80" width="24" height="24" rx="6"/>
     <rect x="80" y="80" width="24" height="24" rx="6"/>
   </g>
-  <rect x="80" y="16" width="24" height="24" rx="6" fill="#1B8A90"
+  <rect x="80" y="16" width="24" height="24" rx="6" fill="#2190A4"
         transform="translate(9,-7) rotate(14 92 28)"/>
 </svg>
 EOF
@@ -266,7 +266,7 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
     <filename-dark>/usr/share/backgrounds/paradigmos/aurora-1-dark.svg</filename-dark>
     <options>zoom</options>
     <shade_type>solid</shade_type>
-    <pcolor>#1B8A90</pcolor>
+    <pcolor>#2190A4</pcolor>
     <scolor>#2B5D86</scolor>
   </wallpaper>
 </wallpapers>
@@ -295,6 +295,11 @@ enabled-extensions=['dash-to-dock@micxgx.gmail.com']
 [org/gnome/desktop/interface]
 # Accessibility: keep the universal-access menu always visible in the top bar
 toolkit-accessibility=true
+# Brand accent: GNOME's stock teal (#2190A4), which IS the brand teal —
+# Elliott aligned the palette to it (2026-07-10) so the supported accent
+# system matches the mark/wallpapers exactly. Enum value, not hex; users
+# can still change it in Settings > Appearance.
+accent-color='teal'
 EOF
 dconf update
 

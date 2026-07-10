@@ -38,8 +38,8 @@ visual polish.
 Done: spec finalized (v0.4); repo public at PlanetLinux98/paradigm-os; first
 kickstart draft (`kickstart/paradigmos.ks`) and containerized build script
 committed. Mark decided: "Shifted tile" (branding/icons/paradigmos-mark.svg),
-three-tone per Elliott: dark navy P-tiles #1F4A6E, lighter grid tiles
-#3A76A8, teal escapee. The kickstart embeds a copy — keep them in sync.
+three-tone per Elliott: dark navy P-tiles #1A3F5F, lighter grid tiles
+#4A8ABD, teal escapee. The kickstart embeds a copy — keep them in sync.
 Three-tone mark confirmed on-screen in build 3 (welcome dialog + dock).
 Two earlier concepts (literal letter-P; aurora-ring/horizon-shift alternates)
 were rejected — don't resurrect them.
@@ -84,12 +84,22 @@ Remaining known work:
 - Background processes (qemu) do not survive the wsl.exe session ending —
   take all VM screenshots within the same script run.
 
-Awaiting Elliott: reaction to the darker-P-tile shading and to the third
-wallpaper colour pass (light draft 3, dark draft 2). Standing art direction:
+Elliott's decisions 2026-07-10 (second round): mark tones nudged again —
+P-tiles darker (#1A3F5F), grid tiles lighter (#4A8ABD); wallpaper set 1
+(aurora-1) APPROVED, wants 3-4 more sets of varying design; accent colour
+is GNOME's built-in `teal`, and the brand teal was realigned to match it
+exactly (#1B8A90 → #2190A4 everywhere, companion tints shifted too).
+accent-color='teal' is in the kickstart dconf. Standing art direction:
 grounds must avoid pure white/black and carry real colour, blue included.
 
+Awaiting Elliott: reaction to wallpaper proposal sets 2-5 in
+branding/wallpapers/ (shift, headland, ripple, curtain — light+dark each)
+and to the optional stronger mark-contrast variant (P #15334E, grid
+#5A99C9) offered alongside the applied one.
+
 Next up (in order):
-1. Finalize mark + wallpaper from Elliott's picks; more wallpaper variants.
+1. Elliott picks wallpaper sets + mark strength; wire picks into the
+   kickstart (gnome-background-properties entries for extra sets).
 2. VM install test (Anaconda flow + a11y carry-over, see above).
 3. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
    hooks, GNOME theme + high-contrast variant, Plymouth, snapshot tooling,

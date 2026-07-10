@@ -7,27 +7,27 @@
       <stop offset="1" stop-color="#B9D8DF"/>
     </linearGradient>
     <linearGradient id="band1" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.10"/>
-      <stop offset="0.5" stop-color="#1B8A90" stop-opacity="0.36"/>
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.10"/>
+      <stop offset="0.5" stop-color="#2190A4" stop-opacity="0.36"/>
       <stop offset="1" stop-color="#2B5D86" stop-opacity="0.16"/>
     </linearGradient>
     <linearGradient id="band2" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#2B5D86" stop-opacity="0.10"/>
       <stop offset="0.6" stop-color="#2B5D86" stop-opacity="0.32"/>
-      <stop offset="1" stop-color="#1B8A90" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0.14"/>
     </linearGradient>
     <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#1B8A90" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#17797E" stop-opacity="0.75"/>
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#176E7E" stop-opacity="0.75"/>
       <stop offset="1" stop-color="#2B5D86" stop-opacity="0"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.78" cy="0.72" r="0.55">
-      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.24"/>
-      <stop offset="1" stop-color="#1B8A90" stop-opacity="0"/>
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="washTeal" cx="0.12" cy="0.08" r="0.6">
-      <stop offset="0" stop-color="#1B8A90" stop-opacity="0.18"/>
-      <stop offset="1" stop-color="#1B8A90" stop-opacity="0"/>
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="washBlue" cx="0.9" cy="0.15" r="0.65">
       <stop offset="0" stop-color="#2B5D86" stop-opacity="0.18"/>

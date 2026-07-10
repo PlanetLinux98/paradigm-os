@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Headland (light variant): layered rolling coastal hills in blues and teals under a glowing sky</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D9EDF0"/>
+      <stop offset="0.6" stop-color="#C2E0E7"/>
+      <stop offset="1" stop-color="#ADD3DF"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.68" cy="0.42" r="0.5">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="8"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <rect width="1920" height="1080" fill="url(#sun)"/>
+  <path d="M0,600 C300,540 560,620 860,570 C1180,516 1420,600 1920,540 L1920,1080 L0,1080 Z"
+        fill="#4A8ABD" opacity="0.35" filter="url(#soft)"/>
+  <path d="M0,710 C360,640 640,740 980,680 C1320,622 1560,720 1920,650 L1920,1080 L0,1080 Z"
+        fill="#2B5D86" opacity="0.45" filter="url(#soft)"/>
+  <path d="M0,830 C420,760 760,870 1120,800 C1440,740 1680,840 1920,780 L1920,1080 L0,1080 Z"
+        fill="#176E7E" opacity="0.55" filter="url(#soft)"/>
+  <path d="M0,950 C480,880 880,990 1280,920 C1560,872 1760,950 1920,910 L1920,1080 L0,1080 Z"
+        fill="#1A3F5F" opacity="0.68" filter="url(#soft)"/>
+</svg>

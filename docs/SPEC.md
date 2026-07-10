@@ -63,31 +63,34 @@ The cool teal/blue palette is confirmed. The mark is decided: **"Shifted tile"**
 (`branding/icons/paradigmos-mark.svg`) — a 3×3 grid of rounded tiles where the
 top-right tile turns teal, rotates, and escapes the grid (the paradigm shift).
 Per Elliott's refinement idea, the five tiles of column 1 + top two of column 2
-sit a shade darker (#1F4A6E), tracing a subtle letter **P**. (An earlier
+sit a shade darker (#1A3F5F), tracing a subtle letter **P**. (An earlier
 literal letter-P concept and two alternates — aurora-ring, horizon-shift — were
 explored and rejected; they survive in git history.)
 
 The wallpapers use a sweeping, Vista-like gradient "aurora" direction
 (confirmed). Grounds must avoid pure whites and pure blacks and carry real
-colour, blue included — per Elliott's feedback on the first two passes. Current:
-light draft 3, dark draft 2, in `branding/wallpapers/`.
+colour, blue included — per Elliott's feedback on the first two passes.
+**Set 1 (`aurora-1`, light + dark) approved by Elliott 2026-07-10** as the
+first of the rotating set; he wants at least three or four more sets in
+varying designs that stay within these style rules. Proposals live in
+`branding/wallpapers/` as they're drafted.
 
 **Palette**
 
 | Token | Hex | Use |
 |---|---|---|
-| Teal (primary) | `#1B8A90` | Primary accent |
+| Teal (primary) | `#2190A4` | Primary accent — deliberately identical to GNOME's built-in `teal` accent colour (Elliott, 2026-07-10), so the supported accent system matches the brand exactly |
 | Deep Blue | `#2B5D86` | Secondary accent |
-| Deep Blue (shade) | `#1F4A6E` | The mark's P-tiles |
-| Deep Blue (light shade) | `#3A76A8` | The mark's non-P grid tiles |
+| Deep Blue (shade) | `#1A3F5F` | The mark's P-tiles |
+| Deep Blue (light shade) | `#4A8ABD` | The mark's non-P grid tiles |
 | Ink | `#12262B` | Text (light mode) |
 | Paper | `#F5F9FA` | Background (light mode) |
 | Flag / semantic | `#A4501F` | "Needs attention" markers only, never used as brand accent |
 
 | Decision | Choice | Why it matters |
 |---|---|---|
-| Wallpaper | Rotating set, paired light/dark variants; sweeping gradient "aurora" style, saturated grounds (no pure white/black) | Direction confirmed; third colour pass (light draft 3, dark draft 2) awaiting Elliott's reaction. More variants to follow for the rotating set. |
-| Wordmark / mark | "Shifted tile" — three-tone 3×3 grid: dark navy P-tiles (#1F4A6E), lighter grid tiles (#3A76A8), escaping teal tile | Elliott picked the concept, the darker-tile P detail, and the lighter grid tiles (2026-07-10) so the P differentiates clearly. |
+| Wallpaper | Rotating set, paired light/dark variants; sweeping gradient "aurora" style, saturated grounds (no pure white/black) | Set 1 approved (2026-07-10); 3–4 more sets in varying designs to follow, then Elliott picks the rotation. |
+| Wordmark / mark | "Shifted tile" — three-tone 3×3 grid: dark navy P-tiles (#1A3F5F), lighter grid tiles (#4A8ABD), escaping teal tile | Elliott picked the concept, the darker-tile P detail, and the lighter grid tiles (2026-07-10) so the P differentiates clearly. |
 | Versioning | Independent version number + codename | Decoupled from the underlying Fedora version, shown in fine print only. |
 | Codename scheme | Abstract/aspirational words, alphabetical across releases | v1.0 proposed as **"Aurora"**; v2.0 would be a B-word, and so on. |
 
@@ -109,6 +112,7 @@ light draft 3, dark draft 2, in `branding/wallpapers/`.
 |---|---|---|
 | Desktop layout | Persistent dock (macOS-like) | More familiar to switchers than vanilla GNOME's Activities-only workflow; must ship via an Orca-compatible, well-maintained dock extension (Dash-to-Dock family), accessibility-tested before lock-in. |
 | Theming | Teal/blue palette applied through GNOME Shell + GTK + icon theme; high-contrast variant included | Keeps the branded look and the accessible fallback as equally first-class options. |
+| Accent colour | GNOME's built-in `teal` accent (`accent-color='teal'` dconf default), with the brand teal aligned to it (#2190A4) | Decided 2026-07-10. Uses the supported libadwaita accent system — update-proof, high-contrast-safe, user-changeable — instead of fragile CSS overrides; the palette alignment makes it exact rather than approximate. |
 
 ## Installer & system architecture
 

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Shift (light variant): drifting rounded tiles echoing the mark, one teal escapee</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCEAF3"/>
+      <stop offset="0.55" stop-color="#C6DDEC"/>
+      <stop offset="1" stop-color="#AECFE3"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.74" cy="0.78" r="0.6">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washBlue" cx="0.1" cy="0.1" r="0.7">
+      <stop offset="0" stop-color="#2B5D86" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#2B5D86" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#washBlue)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <g fill="#4A8ABD" filter="url(#soft)">
+    <rect x="1180" y="820" width="96" height="96" rx="22" opacity="0.16"/>
+    <rect x="1310" y="690" width="96" height="96" rx="22" opacity="0.20"/>
+    <rect x="1310" y="820" width="96" height="96" rx="22" opacity="0.26"/>
+    <rect x="1440" y="950" width="96" height="96" rx="22" opacity="0.20"/>
+    <rect x="1570" y="820" width="96" height="96" rx="22" opacity="0.30"/>
+    <rect x="1700" y="950" width="96" height="96" rx="22" opacity="0.22"/>
+    <rect x="1830" y="820" width="96" height="96" rx="22" opacity="0.16"/>
+  </g>
+  <g fill="#1A3F5F" filter="url(#soft)">
+    <rect x="1440" y="820" width="96" height="96" rx="22" opacity="0.38"/>
+    <rect x="1440" y="690" width="96" height="96" rx="22" opacity="0.34"/>
+    <rect x="1570" y="950" width="96" height="96" rx="22" opacity="0.42"/>
+    <rect x="1700" y="820" width="96" height="96" rx="22" opacity="0.34"/>
+  </g>
+  <rect x="1585" y="620" width="104" height="104" rx="24" fill="#2190A4" opacity="0.9"
+        transform="rotate(14 1637 672)"/>
+</svg>
