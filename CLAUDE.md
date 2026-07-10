@@ -50,19 +50,24 @@ mounts; sync via `git pull /mnt/c/Users/Elliott/ParadigmOS main`). ISO copy
 at build/output/ on the Windows side (gitignored). QEMU/KVM smoke test:
 `bash build/smoke-test.sh` inside WSL (screenshots in docs/screenshots/).
 
-Smoke-test findings (the current fix list):
-- BOOTS to GNOME live session; "Welcome to ParadigmOS" dialog — os-release
-  rebrand works.
-- Installer icon is anaconda's hot-dog placeholder: need a paradigmos-logos
-  package providing the icon names (os-release LOGO=paradigmos-logo).
-- Wallpaper/dock/a11y dconf defaults DID NOT APPLY: /etc/dconf/profile/user
-  must be created with "user-db:user / system-db:local" for local.d to take
-  effect — classic gotcha, fix in %post.
-- Boot menu reads "ParadigmOS 44" (lorax uses releasever) — want "1.0";
-  needs lorax template override or ISO grub.cfg post-process.
-- No dedicated accessibility boot entry yet — design in a11y polish phase.
+**BUILD 2 VERIFIED 2026-07-10** (screenshots in docs/screenshots/build2-*):
+boot menu "Start ParadigmOS 1.0"; aurora wallpaper applied (dconf profile
+fix worked); shifted-tile logo shows in welcome dialog + dock (hot dog
+retired). Locale now en_CA.UTF-8 + America/Toronto (Elliott's decision).
+Kickstart is hermetic — SVG assets embedded in %post, keep in sync with
+branding/ (TODO: move to paradigmos-{backgrounds,logos} RPMs by v1).
+
+Remaining known work:
+- Persistent dock (Dash-to-Dock) — verification pending from desktop shot;
+  extension enablement via dconf may need per-session check.
+- Accessibility boot entry / Orca discoverability — the flagship feature,
+  own design pass. Live session Orca toggle: Super+Alt+S.
+- GNOME theme pass (branded + high-contrast variants); Plymouth splash;
+  NVIDIA driver strategy; snapshot tooling (snapper/btrfs-assistant).
 - pkill gotcha: never `pkill -f qemu...` from a wsl.exe bash -lc one-liner
   (pattern matches the shell's own cmdline and self-terminates, exit 15).
+- Background processes (qemu) do not survive the wsl.exe session ending —
+  take all VM screenshots within the same script run.
 
 Awaiting Elliott: reaction to the darker-P-tile shading and to the third
 wallpaper colour pass (light draft 3, dark draft 2). Standing art direction:
