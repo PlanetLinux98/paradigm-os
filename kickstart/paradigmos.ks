@@ -15,7 +15,10 @@ firewall --enabled --service=mdns
 xconfig --startxonboot
 zerombr
 clearpart --all
-part / --size 8192 --fstype btrfs
+# Live-image rootfs (ext4 is the convention for the live squashfs source;
+# installed systems get Btrfs via Anaconda's defaults). Sized generously for
+# the Workstation + LibreOffice + multimedia package set.
+part / --size 16384 --fstype ext4
 services --enabled=NetworkManager,ModemManager --disabled=sshd
 network --bootproto=dhcp --device=link --activate
 rootpw --lock --iscrypted locked
