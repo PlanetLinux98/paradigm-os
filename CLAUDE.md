@@ -37,8 +37,10 @@ visual polish.
 
 Done: spec finalized (v0.4); repo public at PlanetLinux98/paradigm-os; first
 kickstart draft (`kickstart/paradigmos.ks`) and containerized build script
-committed. Mark decided: "Shifted tile" (branding/icons/paradigmos-mark.svg)
-with five darker tiles tracing a subtle P — Elliott's own refinement idea.
+committed. Mark decided: "Shifted tile" (branding/icons/paradigmos-mark.svg),
+three-tone per Elliott: dark navy P-tiles #1F4A6E, lighter grid tiles
+#3A76A8, teal escapee. The kickstart embeds a copy — keep them in sync.
+Mark updated after build 2; next build picks it up (no rebuild done yet).
 Two earlier concepts (literal letter-P; aurora-ring/horizon-shift alternates)
 were rejected — don't resurrect them.
 

@@ -242,7 +242,7 @@ cat > /usr/share/icons/hicolor/scalable/apps/paradigmos-logo.svg << 'EOF'
     <rect x="48" y="48" width="24" height="24" rx="6"/>
     <rect x="16" y="80" width="24" height="24" rx="6"/>
   </g>
-  <g fill="#2B5D86">
+  <g fill="#3A76A8">
     <rect x="80" y="48" width="24" height="24" rx="6"/>
     <rect x="48" y="80" width="24" height="24" rx="6"/>
     <rect x="80" y="80" width="24" height="24" rx="6"/>

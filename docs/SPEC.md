@@ -69,6 +69,7 @@ light draft 3, dark draft 2, in `branding/wallpapers/`.
 | Teal (primary) | `#1B8A90` | Primary accent |
 | Deep Blue | `#2B5D86` | Secondary accent |
 | Deep Blue (shade) | `#1F4A6E` | The mark's P-tiles |
+| Deep Blue (light shade) | `#3A76A8` | The mark's non-P grid tiles |
 | Ink | `#12262B` | Text (light mode) |
 | Paper | `#F5F9FA` | Background (light mode) |
 | Flag / semantic | `#A4501F` | "Needs attention" markers only, never used as brand accent |
@@ -76,7 +77,7 @@ light draft 3, dark draft 2, in `branding/wallpapers/`.
 | Decision | Choice | Why it matters |
 |---|---|---|
 | Wallpaper | Rotating set, paired light/dark variants; sweeping gradient "aurora" style, saturated grounds (no pure white/black) | Direction confirmed; third colour pass (light draft 3, dark draft 2) awaiting Elliott's reaction. More variants to follow for the rotating set. |
-| Wordmark / mark | "Shifted tile" — 3×3 grid, escaping teal tile, darker tiles tracing a subtle P | Elliott picked the concept and suggested the darker-tile P detail; shading refinement awaiting his reaction. |
+| Wordmark / mark | "Shifted tile" — three-tone 3×3 grid: dark navy P-tiles (#1F4A6E), lighter grid tiles (#3A76A8), escaping teal tile | Elliott picked the concept, the darker-tile P detail, and the lighter grid tiles (2026-07-10) so the P differentiates clearly. |
 | Versioning | Independent version number + codename | Decoupled from the underlying Fedora version, shown in fine print only. |
 | Codename scheme | Abstract/aspirational words, alphabetical across releases | v1.0 proposed as **"Aurora"**; v2.0 would be a B-word, and so on. |
 
