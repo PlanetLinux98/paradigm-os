@@ -49,9 +49,11 @@ forward; update it as decisions evolve.
 
 ## Visual identity
 
-Brand assets were left to Claude's judgment. First concept pass: a cool teal/blue
-palette (calm, professional, easiest to keep WCAG-contrast-safe), a two-plane mark
-suggesting a shift in perspective, and an aspirational, alphabetical codename scheme.
+The cool teal/blue palette is confirmed. Per Elliott's feedback (2026-07-10), the
+mark was revised from two abstract planes into a letter **P** built from those same
+two shifted planes — tying it directly to the name — and the wallpapers took a
+sweeping, Vista-like gradient "aurora" direction. First drafts live in
+`branding/icons/paradigmos-mark.svg` and `branding/wallpapers/aurora-1-{light,dark}.svg`.
 
 **Palette**
 
@@ -65,8 +67,8 @@ suggesting a shift in perspective, and an aspirational, alphabetical codename sc
 
 | Decision | Choice | Why it matters |
 |---|---|---|
-| Wallpaper | Rotating set, paired light/dark variants; proposed style: abstract geometric/gradient | Structure (rotating, paired) was decided directly; the abstract-geometric visual style is Claude's proposal — flag if you'd rather go photographic or minimalist. |
-| Wordmark / mark | Geometric sans wordmark + two overlapping "shifted plane" shapes | Literalizes "paradigm shift" without cliché; simple enough to stay legible at favicon size and in high-contrast mode. |
+| Wallpaper | Rotating set, paired light/dark variants; sweeping gradient "aurora" style (Vista-like) | Direction confirmed by Elliott; first light/dark draft pair in `branding/wallpapers/`, more variants to follow for the rotating set. |
+| Wordmark / mark | Letter-P mark built from two shifted planes + geometric sans wordmark | Revised per Elliott's feedback to visibly invoke the name; still literalizes "paradigm shift," still legible at favicon size and in high-contrast mode. |
 | Versioning | Independent version number + codename | Decoupled from the underlying Fedora version, shown in fine print only. |
 | Codename scheme | Abstract/aspirational words, alphabetical across releases | v1.0 proposed as **"Aurora"**; v2.0 would be a B-word, and so on. |
 
@@ -107,16 +109,16 @@ suggesting a shift in perspective, and an aspirational, alphabetical codename sc
 | Update cadence | Undecided — leaning ~12-month major cycle (skipping one Fedora release per cycle) | Deliberately deferred until after v1 ships; build pipeline is scripted regardless so a rebase is low-effort whenever it happens. |
 | Trademark/legal | Claude handles Fedora Remix compliance end-to-end | No Fedora logo, clear "unofficial community remix" disclosure, license compliance for bundled packages — flagged to you only where genuine judgment calls arise. |
 | Openness | Fully open, public repo | Kickstart files, build scripts, and branding source all public — standard practice for community Fedora remixes, builds contributor trust. |
-| Distribution | Dedicated website + GitHub Releases | Website as the public face, GitHub Releases as the actual file host behind it. |
+| Distribution | GitHub Releases at `github.com/PlanetLinux98/paradigm-os`; dedicated website deferred | Repo name confirmed by Elliott (2026-07-10); a website becomes the public face closer to the v1 release. |
 | Licensing | MIT/Apache-2.0 (scripts & configs) + Creative Commons (wallpapers/art) | Standard, maximizes reuse and trust. Note: the ParadigmOS name/wordmark can still be reserved as a mark even under an open art license — worth a deliberate call later. |
 
 ## Open items
 
-- **Needs your input:** GitHub username/org + repo name; domain name (e.g.
-  `paradigmos.org`).
-- **Proposed, awaiting your confirmation:** wallpaper visual style (abstract
-  geometric) and the two-plane wordmark concept.
-- **Deliberately deferred:** exact update-cadence commitment — revisit after v1 ships.
+- **Awaiting Elliott's reaction:** the revised letter-P mark and the first aurora
+  wallpaper pair (drafts in `branding/`).
+- **Deliberately deferred:** exact update-cadence commitment (revisit after v1
+  ships; leaning ~12-month major cycle) and the website/domain (revisit
+  approaching v1).
 
 ## Build environment (set up during planning)
 
