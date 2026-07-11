@@ -119,6 +119,15 @@ prints per-segment timestamps; beep check is informational, speech check
 still hard-fails. Beep caveat: needs the play module + PC speaker — BIOS
 machines and VMs yes, signed-UEFI hardware mostly no (timeout is the net).
 
+Build stamping (Elliott 2026-07-11): every ISO self-identifies — BUILD_ID
+in os-release (N.YYYYMMDD.g<hash>; N from build/BUILD_NUMBER, bump it per
+verified build), boot title "(build N)", ISO filename/volid buildN,
+/etc/paradigmos-release one-liner. build-iso.sh fills @BUILDID@/@BUILDINFO@
+placeholders into a stamped kickstart copy under build/output/ — repo
+kickstart keeps the placeholders. Spell out "build N", never "bN" (reads
+as beta). First stamped build: 6. Verify Settings > About shows "OS Build"
+during the VM session.
+
 Next up (in order):
 1. VM install test (Anaconda flow + a11y carry-over, see above).
 2. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding

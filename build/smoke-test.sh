@@ -8,7 +8,8 @@
 # Usage: bash build/smoke-test.sh [output-dir]
 set -euo pipefail
 
-ISO="/root/paradigm-os/build/output/result/ParadigmOS-1.0-Aurora-x86_64.iso"
+# The filename carries the build number now — take the newest ISO in result/.
+ISO="$(ls -t /root/paradigm-os/build/output/result/ParadigmOS-*.iso | head -1)"
 OUT="${1:-/root/smoke-shots}"
 MON="/tmp/pmon.sock"
 WAV="$OUT/paradigmos-a11y-speech.wav"

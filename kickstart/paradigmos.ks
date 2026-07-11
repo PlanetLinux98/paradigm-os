@@ -108,6 +108,10 @@ sed -i 's/^livesys_session=.*/livesys_session="gnome"/' /etc/sysconfig/livesys
 # ---- Branding: os-release ----
 # Remix-compliant rebrand: ParadigmOS identity, with CPE and bug URLs left
 # pointing at nothing Fedora-branded. VARIANT records the Fedora base.
+# @BUILDID@/@BUILDINFO@ are filled by build/build-iso.sh (build number from
+# build/BUILD_NUMBER + git hash + date) into a stamped copy at build time —
+# this repo copy keeps the placeholders. BUILD_ID surfaces in
+# `cat /etc/os-release` and as the "OS Build" row in GNOME Settings > About.
 cat > /usr/lib/os-release << 'EOF'
 NAME="ParadigmOS"
 VERSION="1.0 (Aurora)"
@@ -115,6 +119,7 @@ ID=paradigmos
 ID_LIKE=fedora
 VERSION_ID=1.0
 VERSION_CODENAME=aurora
+BUILD_ID="@BUILDID@"
 PLATFORM_ID="platform:f44"
 PRETTY_NAME="ParadigmOS 1.0 (Aurora)"
 ANSI_COLOR="0;36"
@@ -125,6 +130,9 @@ VARIANT="Desktop (Fedora 44 Remix)"
 VARIANT_ID=desktop
 EOF
 ln -sf ../usr/lib/os-release /etc/os-release
+
+# One human-readable line for support conversations: which build is this?
+echo "@BUILDINFO@" > /etc/paradigmos-release
 
 # ---- Branding: wallpapers & logo ----
 # Assets embedded directly so the build is hermetic — no network fetch, no

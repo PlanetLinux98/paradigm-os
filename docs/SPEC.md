@@ -143,6 +143,7 @@ and registered in Settings → Appearance. Aurora remains the default.
 | Trademark/legal | Claude handles Fedora Remix compliance end-to-end | No Fedora logo, clear "unofficial community remix" disclosure, license compliance for bundled packages — flagged to you only where genuine judgment calls arise. |
 | Openness | Fully open, public repo | Kickstart files, build scripts, and branding source all public — standard practice for community Fedora remixes, builds contributor trust. |
 | Distribution | GitHub Releases at `github.com/PlanetLinux98/paradigm-os`; dedicated website deferred | Repo name confirmed by Elliott (2026-07-10); a website becomes the public face closer to the v1 release. |
+| Build identification | Every ISO is stamped: `BUILD_ID="N.YYYYMMDD.g<hash>"` in os-release (shows as "OS Build" in Settings → About), boot menu titled "Start ParadigmOS 1.0 (build N)", ISO name/volume label carry `buildN`, `/etc/paradigmos-release` holds one human-readable line | Decided 2026-07-11. Human number from `build/BUILD_NUMBER` (bumped per verified build), hash+date stamped automatically. Spelled-out "build N" — not "bN", which reads as "beta N" (Elliott). |
 | Licensing | MIT/Apache-2.0 (scripts & configs) + Creative Commons (wallpapers/art) | Standard, maximizes reuse and trust. Note: the ParadigmOS name/wordmark can still be reserved as a mark even under an open art license — worth a deliberate call later. |
 
 ## Open items
