@@ -72,10 +72,10 @@ explored and rejected; they survive in git history.)
 The wallpapers use a sweeping, Vista-like gradient "aurora" direction
 (confirmed). Grounds must avoid pure whites and pure blacks and carry real
 colour, blue included — per Elliott's feedback on the first two passes.
-**Set 1 (`aurora-1`, light + dark) approved by Elliott 2026-07-10** as the
-first of the rotating set; he wants at least three or four more sets in
-varying designs that stay within these style rules. Proposals live in
-`branding/wallpapers/` as they're drafted.
+**All five sets approved by Elliott 2026-07-10** after three revision rounds:
+Aurora (`aurora-1`), Shift, Headland, Ripple, and Curtain — each a paired
+light/dark design in `branding/wallpapers/`, all embedded in the kickstart
+and registered in Settings → Appearance. Aurora remains the default.
 
 **Palette**
 
@@ -91,7 +91,7 @@ varying designs that stay within these style rules. Proposals live in
 
 | Decision | Choice | Why it matters |
 |---|---|---|
-| Wallpaper | Rotating set, paired light/dark variants; sweeping gradient "aurora" style, saturated grounds (no pure white/black) | Set 1 approved (2026-07-10); 3–4 more sets in varying designs to follow, then Elliott picks the rotation. |
+| Wallpaper | Five sets ship, paired light/dark variants: Aurora (default), Shift, Headland, Ripple, Curtain — saturated grounds, no pure white/black | All five approved by Elliott 2026-07-10 (three revision rounds). Embedded in the kickstart; selectable in Settings → Appearance. |
 | Wordmark / mark | "Shifted tile" — three-tone 3×3 grid: dark navy P-tiles (#1F4A6E), lighter grid tiles (#4A8ABD), escaping teal tile (#2190A4) | Elliott picked the concept and settled the tones over two rounds (2026-07-10): P-tiles keep their original shade, grid tiles go lighter, so the P differentiates without darkening. |
 | Versioning | Independent version number + codename | Decoupled from the underlying Fedora version, shown in fine print only. |
 | Codename scheme | Abstract/aspirational words, alphabetical across releases | v1.0 proposed as **"Aurora"**; v2.0 would be a B-word, and so on. |

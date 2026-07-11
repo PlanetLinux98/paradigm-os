@@ -95,15 +95,18 @@ tints shifted too). accent-color='teal' is in the kickstart dconf.
 Standing art direction: grounds must avoid pure white/black and carry
 real colour, blue included.
 
-Wallpaper sets 2-5 (shift/headland/ripple/curtain in branding/wallpapers/)
-went through revision 2 per Elliott: shift-light ground turned light teal;
-headland gradients made sweeping (gradient-fill hills + heavier blur);
-ripple and curtain made more contrasting/vivid, less white in the light
-variants. Awaiting his reaction to revision 2.
+WALLPAPERS SETTLED 2026-07-10: all five sets approved after three revision
+rounds (rev 2: teal shift-light ground, melting headland layers, more
+vivid ripple/curtain; rev 3: shift/headland/ripple fill the frame). All
+eight new SVGs embedded in the kickstart (via scratch script reading
+branding/wallpapers/ so copies can't drift) and registered in
+gnome-background-properties as Aurora/Shift/Headland/Ripple/Curtain.
+Aurora stays the dconf default.
 
 Next up (in order):
-1. Elliott picks wallpaper sets; wire picks into the kickstart
-   (gnome-background-properties entries for extra sets).
+1. Build 4 + smoke test: verify settled mark, teal accent (welcome-dialog
+   button + dock highlight should render GNOME teal), five wallpaper sets,
+   and the screen-reader entry regression.
 2. VM install test (Anaconda flow + a11y carry-over, see above).
 3. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
    hooks, GNOME theme + high-contrast variant, Plymouth, snapshot tooling,

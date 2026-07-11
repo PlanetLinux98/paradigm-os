@@ -227,6 +227,405 @@ cat > /usr/share/backgrounds/paradigmos/aurora-1-dark.svg << 'EOF'
 </svg>
 EOF
 
+# Sets 2-5 (shift, headland, ripple, curtain), approved by Elliott
+# 2026-07-10 after three revision rounds. Copies of branding/wallpapers/.
+
+cat > /usr/share/backgrounds/paradigmos/shift-light.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Shift (light variant, rev 3): a diagonal cascade of tiles rising across the canvas toward one teal escapee</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C6E7E6"/>
+      <stop offset="0.55" stop-color="#B0DBDD"/>
+      <stop offset="1" stop-color="#9CCED6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.85" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washBlue" cx="0.08" cy="0.1" r="0.7">
+      <stop offset="0" stop-color="#2B5D86" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#2B5D86" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#washBlue)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <g fill="#4A8ABD" filter="url(#soft)">
+    <rect x="120" y="140" width="84" height="84" rx="20" opacity="0.08"/>
+    <rect x="380" y="260" width="84" height="84" rx="20" opacity="0.10"/>
+    <rect x="120" y="890" width="84" height="84" rx="20" opacity="0.14"/>
+    <rect x="250" y="1010" width="84" height="84" rx="20" opacity="0.12"/>
+    <rect x="250" y="760" width="84" height="84" rx="20" opacity="0.18"/>
+    <rect x="380" y="890" width="96" height="96" rx="22" opacity="0.20"/>
+    <rect x="510" y="1010" width="96" height="96" rx="22" opacity="0.16"/>
+    <rect x="510" y="760" width="96" height="96" rx="22" opacity="0.22"/>
+    <rect x="640" y="890" width="96" height="96" rx="22" opacity="0.24"/>
+    <rect x="770" y="630" width="96" height="96" rx="22" opacity="0.20"/>
+    <rect x="770" y="1010" width="96" height="96" rx="22" opacity="0.18"/>
+    <rect x="900" y="760" width="96" height="96" rx="22" opacity="0.26"/>
+    <rect x="1030" y="890" width="96" height="96" rx="22" opacity="0.28"/>
+    <rect x="1030" y="630" width="96" height="96" rx="22" opacity="0.22"/>
+    <rect x="1160" y="760" width="96" height="96" rx="22" opacity="0.30"/>
+    <rect x="1290" y="500" width="96" height="96" rx="22" opacity="0.24"/>
+    <rect x="1290" y="890" width="96" height="96" rx="22" opacity="0.26"/>
+    <rect x="1420" y="630" width="96" height="96" rx="22" opacity="0.32"/>
+    <rect x="1550" y="760" width="104" height="104" rx="24" opacity="0.30"/>
+    <rect x="1680" y="890" width="96" height="96" rx="22" opacity="0.26"/>
+    <rect x="1810" y="1010" width="96" height="96" rx="22" opacity="0.18"/>
+  </g>
+  <g fill="#1A3F5F" filter="url(#soft)">
+    <rect x="1160" y="500" width="96" height="96" rx="22" opacity="0.34"/>
+    <rect x="1420" y="890" width="96" height="96" rx="22" opacity="0.38"/>
+    <rect x="1550" y="500" width="96" height="96" rx="22" opacity="0.34"/>
+    <rect x="1680" y="630" width="104" height="104" rx="24" opacity="0.40"/>
+    <rect x="1810" y="760" width="96" height="96" rx="22" opacity="0.34"/>
+  </g>
+  <rect x="1660" y="360" width="112" height="112" rx="26" fill="#2190A4" opacity="0.9"
+        transform="rotate(14 1716 416)"/>
+</svg>
+EOF
+
+cat > /usr/share/backgrounds/paradigmos/shift-dark.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Shift (dark variant, rev 3): a glowing diagonal cascade of tiles rising toward one bright teal escapee</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0F2233"/>
+      <stop offset="0.55" stop-color="#153048"/>
+      <stop offset="1" stop-color="#1A3F5F"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.85" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="washBlue" cx="0.08" cy="0.1" r="0.7">
+      <stop offset="0" stop-color="#4A8ABD" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#4A8ABD" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#washBlue)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <g fill="#4A8ABD" filter="url(#soft)">
+    <rect x="120" y="140" width="84" height="84" rx="20" opacity="0.10"/>
+    <rect x="380" y="260" width="84" height="84" rx="20" opacity="0.12"/>
+    <rect x="120" y="890" width="84" height="84" rx="20" opacity="0.16"/>
+    <rect x="250" y="1010" width="84" height="84" rx="20" opacity="0.14"/>
+    <rect x="250" y="760" width="84" height="84" rx="20" opacity="0.20"/>
+    <rect x="380" y="890" width="96" height="96" rx="22" opacity="0.22"/>
+    <rect x="510" y="1010" width="96" height="96" rx="22" opacity="0.18"/>
+    <rect x="510" y="760" width="96" height="96" rx="22" opacity="0.24"/>
+    <rect x="640" y="890" width="96" height="96" rx="22" opacity="0.26"/>
+    <rect x="770" y="630" width="96" height="96" rx="22" opacity="0.22"/>
+    <rect x="770" y="1010" width="96" height="96" rx="22" opacity="0.20"/>
+    <rect x="900" y="760" width="96" height="96" rx="22" opacity="0.28"/>
+    <rect x="1030" y="890" width="96" height="96" rx="22" opacity="0.30"/>
+    <rect x="1030" y="630" width="96" height="96" rx="22" opacity="0.24"/>
+    <rect x="1160" y="760" width="96" height="96" rx="22" opacity="0.32"/>
+    <rect x="1290" y="500" width="96" height="96" rx="22" opacity="0.26"/>
+    <rect x="1290" y="890" width="96" height="96" rx="22" opacity="0.28"/>
+    <rect x="1420" y="630" width="96" height="96" rx="22" opacity="0.34"/>
+    <rect x="1550" y="760" width="104" height="104" rx="24" opacity="0.32"/>
+    <rect x="1680" y="890" width="96" height="96" rx="22" opacity="0.28"/>
+    <rect x="1810" y="1010" width="96" height="96" rx="22" opacity="0.20"/>
+  </g>
+  <g fill="#7FB2DD" filter="url(#soft)">
+    <rect x="1160" y="500" width="96" height="96" rx="22" opacity="0.30"/>
+    <rect x="1420" y="890" width="96" height="96" rx="22" opacity="0.34"/>
+    <rect x="1550" y="500" width="96" height="96" rx="22" opacity="0.30"/>
+    <rect x="1680" y="630" width="104" height="104" rx="24" opacity="0.36"/>
+    <rect x="1810" y="760" width="96" height="96" rx="22" opacity="0.30"/>
+  </g>
+  <rect x="1660" y="360" width="112" height="112" rx="26" fill="#4FBACD" opacity="0.92"
+        transform="rotate(14 1716 416)"/>
+</svg>
+EOF
+
+cat > /usr/share/backgrounds/paradigmos/headland-light.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Headland (light variant, rev 3): five sweeping ridge layers filling most of the frame</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D9EDF0"/>
+      <stop offset="0.6" stop-color="#C2E0E7"/>
+      <stop offset="1" stop-color="#ADD3DF"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.68" cy="0.3" r="0.5">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="h0" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4A8ABD" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#4A8ABD" stop-opacity="0.08"/>
+    </linearGradient>
+    <linearGradient id="h1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2B5D86" stop-opacity="0.50"/>
+      <stop offset="1" stop-color="#2B5D86" stop-opacity="0.12"/>
+    </linearGradient>
+    <linearGradient id="h2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#176E7E" stop-opacity="0.60"/>
+      <stop offset="1" stop-color="#176E7E" stop-opacity="0.18"/>
+    </linearGradient>
+    <linearGradient id="h3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2B5D86" stop-opacity="0.66"/>
+      <stop offset="1" stop-color="#2B5D86" stop-opacity="0.26"/>
+    </linearGradient>
+    <linearGradient id="h4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1A3F5F" stop-opacity="0.78"/>
+      <stop offset="1" stop-color="#1A3F5F" stop-opacity="0.34"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <rect width="1920" height="1080" fill="url(#sun)"/>
+  <path d="M0,460 C320,400 640,470 960,430 C1280,392 1600,450 1920,410 L1920,1080 L0,1080 Z"
+        fill="url(#h0)" filter="url(#soft)"/>
+  <path d="M0,590 C300,525 560,610 860,560 C1180,505 1420,590 1920,530 L1920,1080 L0,1080 Z"
+        fill="url(#h1)" filter="url(#soft)"/>
+  <path d="M0,720 C360,650 640,750 980,690 C1320,632 1560,730 1920,660 L1920,1080 L0,1080 Z"
+        fill="url(#h2)" filter="url(#soft)"/>
+  <path d="M0,845 C420,775 760,885 1120,815 C1440,755 1680,855 1920,795 L1920,1080 L0,1080 Z"
+        fill="url(#h3)" filter="url(#soft)"/>
+  <path d="M0,955 C480,885 880,995 1280,925 C1560,877 1760,955 1920,915 L1920,1080 L0,1080 Z"
+        fill="url(#h4)" filter="url(#soft)"/>
+</svg>
+EOF
+
+cat > /usr/share/backgrounds/paradigmos/headland-dark.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Headland (dark variant, rev 3): five dusk ridge layers filling the frame under a teal afterglow</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E1E2C"/>
+      <stop offset="0.65" stop-color="#153349"/>
+      <stop offset="1" stop-color="#1B4258"/>
+    </linearGradient>
+    <radialGradient id="afterglow" cx="0.68" cy="0.36" r="0.5">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.44"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="h0" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2F6DA0" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#2F6DA0" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="h1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#24537D" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#24537D" stop-opacity="0.16"/>
+    </linearGradient>
+    <linearGradient id="h2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1B4A66" stop-opacity="0.70"/>
+      <stop offset="1" stop-color="#1B4A66" stop-opacity="0.24"/>
+    </linearGradient>
+    <linearGradient id="h3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#17455C" stop-opacity="0.82"/>
+      <stop offset="1" stop-color="#17455C" stop-opacity="0.32"/>
+    </linearGradient>
+    <linearGradient id="h4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#102A40" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#102A40" stop-opacity="0.55"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4FBACD" stop-opacity="0"/>
+      <stop offset="0.55" stop-color="#4FBACD" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#4FBACD" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="soft2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <rect width="1920" height="1080" fill="url(#afterglow)"/>
+  <path d="M0,460 C320,400 640,470 960,430 C1280,392 1600,450 1920,410 L1920,1080 L0,1080 Z"
+        fill="url(#h0)" filter="url(#soft)"/>
+  <path d="M0,590 C300,525 560,610 860,560 C1180,505 1420,590 1920,530 L1920,1080 L0,1080 Z"
+        fill="url(#h1)" filter="url(#soft)"/>
+  <path d="M0,720 C360,650 640,750 980,690 C1320,632 1560,730 1920,660 L1920,1080 L0,1080 Z"
+        fill="url(#h2)" filter="url(#soft)"/>
+  <path d="M0,845 C420,775 760,885 1120,815 C1440,755 1680,855 1920,795 L1920,1080 L0,1080 Z"
+        fill="url(#h3)" filter="url(#soft)"/>
+  <path d="M0,957 C480,887 880,997 1280,927 C1560,879 1760,957 1920,917"
+        fill="none" stroke="url(#rim)" stroke-width="4" filter="url(#soft2)"/>
+  <path d="M0,955 C480,885 880,995 1280,925 C1560,877 1760,955 1920,915 L1920,1080 L0,1080 Z"
+        fill="url(#h4)" filter="url(#soft)"/>
+</svg>
+EOF
+
+cat > /usr/share/backgrounds/paradigmos/ripple-light.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Ripple (light variant, rev 3): arcs reaching the far corner, answered by a second ripple from the top right</title>
+  <defs>
+    <radialGradient id="bg" cx="0.05" cy="1.05" r="1.4">
+      <stop offset="0" stop-color="#B7DCE3"/>
+      <stop offset="0.55" stop-color="#98C6D5"/>
+      <stop offset="1" stop-color="#7BAEC6"/>
+    </radialGradient>
+    <radialGradient id="core" cx="0.02" cy="1.02" r="0.5">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="core2" cx="0.99" cy="0.0" r="0.4">
+      <stop offset="0" stop-color="#2B5D86" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#2B5D86" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#core)"/>
+  <rect width="1920" height="1080" fill="url(#core2)"/>
+  <g fill="none" filter="url(#soft)">
+    <circle cx="30" cy="1100" r="280" stroke="#176E7E" stroke-width="34" opacity="0.55"/>
+    <circle cx="30" cy="1100" r="470" stroke="#2190A4" stroke-width="28" opacity="0.46"/>
+    <circle cx="30" cy="1100" r="660" stroke="#2B5D86" stroke-width="24" opacity="0.38"/>
+    <circle cx="30" cy="1100" r="850" stroke="#2190A4" stroke-width="20" opacity="0.31"/>
+    <circle cx="30" cy="1100" r="1040" stroke="#4A8ABD" stroke-width="17" opacity="0.25"/>
+    <circle cx="30" cy="1100" r="1230" stroke="#2190A4" stroke-width="14" opacity="0.20"/>
+    <circle cx="30" cy="1100" r="1420" stroke="#2B5D86" stroke-width="12" opacity="0.16"/>
+    <circle cx="30" cy="1100" r="1610" stroke="#176E7E" stroke-width="10" opacity="0.13"/>
+    <circle cx="30" cy="1100" r="1800" stroke="#2190A4" stroke-width="9" opacity="0.11"/>
+    <circle cx="30" cy="1100" r="1990" stroke="#4A8ABD" stroke-width="8" opacity="0.09"/>
+  </g>
+  <g fill="none" filter="url(#soft)">
+    <circle cx="1890" cy="-20" r="200" stroke="#2190A4" stroke-width="16" opacity="0.30"/>
+    <circle cx="1890" cy="-20" r="360" stroke="#2B5D86" stroke-width="13" opacity="0.24"/>
+    <circle cx="1890" cy="-20" r="520" stroke="#176E7E" stroke-width="11" opacity="0.18"/>
+    <circle cx="1890" cy="-20" r="680" stroke="#2190A4" stroke-width="9" opacity="0.13"/>
+  </g>
+</svg>
+EOF
+
+cat > /usr/share/backgrounds/paradigmos/ripple-dark.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Ripple (dark variant, rev 3): glowing arcs reaching the far corner, answered by a second ripple from the top right</title>
+  <defs>
+    <radialGradient id="bg" cx="0.05" cy="1.05" r="1.4">
+      <stop offset="0" stop-color="#123240"/>
+      <stop offset="0.55" stop-color="#0F2735"/>
+      <stop offset="1" stop-color="#0D1F2E"/>
+    </radialGradient>
+    <radialGradient id="core" cx="0.02" cy="1.02" r="0.5">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="core2" cx="0.99" cy="0.0" r="0.4">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#core)"/>
+  <rect width="1920" height="1080" fill="url(#core2)"/>
+  <g fill="none" filter="url(#soft)">
+    <circle cx="30" cy="1100" r="280" stroke="#4FBACD" stroke-width="34" opacity="0.60"/>
+    <circle cx="30" cy="1100" r="470" stroke="#2F97A9" stroke-width="28" opacity="0.48"/>
+    <circle cx="30" cy="1100" r="660" stroke="#4A8ABD" stroke-width="24" opacity="0.40"/>
+    <circle cx="30" cy="1100" r="850" stroke="#4FBACD" stroke-width="20" opacity="0.33"/>
+    <circle cx="30" cy="1100" r="1040" stroke="#2F97A9" stroke-width="17" opacity="0.26"/>
+    <circle cx="30" cy="1100" r="1230" stroke="#4A8ABD" stroke-width="14" opacity="0.21"/>
+    <circle cx="30" cy="1100" r="1420" stroke="#4FBACD" stroke-width="12" opacity="0.17"/>
+    <circle cx="30" cy="1100" r="1610" stroke="#2F97A9" stroke-width="10" opacity="0.13"/>
+    <circle cx="30" cy="1100" r="1800" stroke="#4A8ABD" stroke-width="9" opacity="0.11"/>
+    <circle cx="30" cy="1100" r="1990" stroke="#4FBACD" stroke-width="8" opacity="0.09"/>
+  </g>
+  <g fill="none" filter="url(#soft)">
+    <circle cx="1890" cy="-20" r="200" stroke="#4FBACD" stroke-width="16" opacity="0.34"/>
+    <circle cx="1890" cy="-20" r="360" stroke="#4A8ABD" stroke-width="13" opacity="0.26"/>
+    <circle cx="1890" cy="-20" r="520" stroke="#2F97A9" stroke-width="11" opacity="0.20"/>
+    <circle cx="1890" cy="-20" r="680" stroke="#4FBACD" stroke-width="9" opacity="0.14"/>
+  </g>
+</svg>
+EOF
+
+cat > /usr/share/backgrounds/paradigmos/curtain-light.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Curtain (light variant, rev 2): vivid aurora curtains in varied teals and blues on a saturated ground</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#B9DDE4"/>
+      <stop offset="0.6" stop-color="#9FCEDA"/>
+      <stop offset="1" stop-color="#83B9CC"/>
+    </linearGradient>
+    <linearGradient id="f1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.50"/>
+      <stop offset="0.7" stop-color="#2190A4" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="f2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2B5D86" stop-opacity="0.44"/>
+      <stop offset="0.7" stop-color="#2B5D86" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#2B5D86" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="f3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4A8ABD" stop-opacity="0.42"/>
+      <stop offset="0.7" stop-color="#4A8ABD" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#4A8ABD" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="f4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#176E7E" stop-opacity="0.48"/>
+      <stop offset="0.7" stop-color="#176E7E" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#176E7E" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="26"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <g filter="url(#soft)">
+    <rect x="100" y="-60" width="170" height="880" fill="url(#f2)" transform="skewX(-6)"/>
+    <rect x="360" y="-60" width="250" height="1030" fill="url(#f1)" transform="skewX(-4)"/>
+    <rect x="680" y="-60" width="140" height="800" fill="url(#f4)" transform="skewX(-7)"/>
+    <rect x="930" y="-60" width="290" height="1080" fill="url(#f1)" transform="skewX(-3)"/>
+    <rect x="1290" y="-60" width="170" height="880" fill="url(#f2)" transform="skewX(-6)"/>
+    <rect x="1520" y="-60" width="220" height="980" fill="url(#f3)" transform="skewX(-5)"/>
+    <rect x="1790" y="-60" width="160" height="900" fill="url(#f4)" transform="skewX(-4)"/>
+  </g>
+</svg>
+EOF
+
+cat > /usr/share/backgrounds/paradigmos/curtain-dark.svg << 'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>ParadigmOS wallpaper — Curtain (dark variant, rev 2): vivid varied teal and blue curtains over a richer night ground</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0C1D2B"/>
+      <stop offset="0.6" stop-color="#113049"/>
+      <stop offset="1" stop-color="#1A4460"/>
+    </linearGradient>
+    <linearGradient id="f1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2F97A9" stop-opacity="0.60"/>
+      <stop offset="0.7" stop-color="#2F97A9" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#2F97A9" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="f2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4A8ABD" stop-opacity="0.50"/>
+      <stop offset="0.7" stop-color="#4A8ABD" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#4A8ABD" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="f3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4FBACD" stop-opacity="0.58"/>
+      <stop offset="0.7" stop-color="#4FBACD" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#4FBACD" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="f4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2190A4" stop-opacity="0.55"/>
+      <stop offset="0.7" stop-color="#2190A4" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#2190A4" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="26"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <g filter="url(#soft)">
+    <rect x="100" y="-60" width="170" height="880" fill="url(#f2)" transform="skewX(-6)"/>
+    <rect x="360" y="-60" width="250" height="1030" fill="url(#f1)" transform="skewX(-4)"/>
+    <rect x="680" y="-60" width="140" height="800" fill="url(#f3)" transform="skewX(-7)"/>
+    <rect x="930" y="-60" width="290" height="1080" fill="url(#f4)" transform="skewX(-3)"/>
+    <rect x="1290" y="-60" width="170" height="880" fill="url(#f2)" transform="skewX(-6)"/>
+    <rect x="1520" y="-60" width="220" height="980" fill="url(#f3)" transform="skewX(-5)"/>
+    <rect x="1790" y="-60" width="160" height="900" fill="url(#f1)" transform="skewX(-4)"/>
+  </g>
+</svg>
+EOF
+
 # The shifted-tile mark, installed under our own icon name (matching
 # os-release LOGO=paradigmos-logo) and also as fedora-logo-icon — the name
 # anaconda's desktop entry references; without it the installer shows
@@ -268,6 +667,42 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
     <shade_type>solid</shade_type>
     <pcolor>#2190A4</pcolor>
     <scolor>#2B5D86</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Shift</name>
+    <filename>/usr/share/backgrounds/paradigmos/shift-light.svg</filename>
+    <filename-dark>/usr/share/backgrounds/paradigmos/shift-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#2190A4</pcolor>
+    <scolor>#1A3F5F</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Headland</name>
+    <filename>/usr/share/backgrounds/paradigmos/headland-light.svg</filename>
+    <filename-dark>/usr/share/backgrounds/paradigmos/headland-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#176E7E</pcolor>
+    <scolor>#1A3F5F</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Ripple</name>
+    <filename>/usr/share/backgrounds/paradigmos/ripple-light.svg</filename>
+    <filename-dark>/usr/share/backgrounds/paradigmos/ripple-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#2190A4</pcolor>
+    <scolor>#123240</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Curtain</name>
+    <filename>/usr/share/backgrounds/paradigmos/curtain-light.svg</filename>
+    <filename-dark>/usr/share/backgrounds/paradigmos/curtain-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#2F97A9</pcolor>
+    <scolor>#113049</scolor>
   </wallpaper>
 </wallpapers>
 EOF
