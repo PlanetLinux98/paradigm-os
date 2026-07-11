@@ -17,8 +17,11 @@ mkdir -p "$OUT"
 pkill -f "qemu-system-x86_64.*ParadigmOS" 2>/dev/null || true
 rm -f "$MON" "$WAV"
 
+# pcspk-audiodev routes the emulated PC speaker into the same capture, so
+# the GRUB boot-menu beep cue is recorded alongside Orca's speech.
 qemu-system-x86_64 \
   -enable-kvm -m 4096 -smp 2 \
+  -machine pcspk-audiodev=snd0 \
   -cdrom "$ISO" \
   -display none -vnc :9 \
   -audiodev "wav,id=snd0,path=${WAV}" \
@@ -59,24 +62,47 @@ mon "sendkey esc"
 sleep 8
 shot paradigmos-desktop.png
 
-# Speech check. QEMU's wav backend only finalizes the header on exit, so
+# Audio checks. QEMU's wav backend only finalizes the header on exit, so
 # while the VM is still running we read the raw PCM after the 44-byte
-# header instead of trusting the frame count.
+# header instead of trusting the frame count. Segments are printed with
+# timestamps: the GRUB beep cue should appear as a short blip near the
+# start of the capture, Orca's speech as long segments later.
 python3 - "$WAV" <<'PY'
-import array, os, sys
+import array, sys
 
 path = sys.argv[1]
-size = os.path.getsize(path)
 with open(path, "rb") as f:
     f.seek(44)
     data = f.read()
 samples = array.array("h", data[: len(data) // 2 * 2])
-peak = max((abs(s) for s in samples), default=0)
-secs = len(samples) / 2 / 44100  # stereo, 44.1 kHz
-print(f"audio capture: {size} bytes, ~{secs:.0f}s, peak amplitude {peak}/32767")
-if peak < 1000:
-    sys.exit("SPEECH CHECK FAILED: capture is (near-)silent — Orca did not speak")
-print("SPEECH CHECK PASSED: guest produced real audio (Orca speaking)")
+rate = 44100 * 2  # stereo samples per second
+win = rate // 2   # half-second windows
+peaks = [max((abs(s) for s in samples[i : i + win]), default=0)
+         for i in range(0, len(samples), win)]
+thr = 1000
+segments, start = [], None
+for n, p in enumerate(peaks):
+    if p > thr and start is None:
+        start = n
+    elif p <= thr and start is not None:
+        segments.append((start, n))
+        start = None
+if start is not None:
+    segments.append((start, len(peaks)))
+
+print(f"audio capture: ~{len(samples) / rate:.0f}s, non-silent segments:")
+for s, e in segments:
+    print(f"  {s / 2:7.1f}s - {e / 2:7.1f}s  peak {max(peaks[s:e])}/32767")
+
+total = sum(e - s for s, e in segments) / 2
+overall = max(peaks, default=0)
+if total < 3 or overall < 5000:
+    sys.exit("SPEECH CHECK FAILED: no sustained audio — Orca did not speak")
+print(f"SPEECH CHECK PASSED: {total:.1f}s of real audio, peak {overall}/32767")
+if segments and segments[0][0] / 2 <= 5 and (segments[0][1] - segments[0][0]) / 2 <= 2:
+    print("BEEP CUE DETECTED: short blip at start of capture (boot-menu beep)")
+else:
+    print("BEEP CUE NOT DETECTED in early capture — verify the grub beep manually")
 PY
 
 echo "SMOKE TEST DONE in $OUT (qemu pid ${QEMU_PID} left running for more shots)"

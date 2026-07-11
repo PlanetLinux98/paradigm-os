@@ -37,6 +37,14 @@ forward; update it as decisions evolve.
   carries the setting onto the installed system (via an Anaconda post-script), so
   the first boot and `gnome-initial-setup` speak as well. In any session,
   `Super+Alt+S` still toggles Orca manually.
+- **Knowing when the menu is on screen (Elliott's concern, added 2026-07-10):**
+  the menu announces itself with **two short PC-speaker beeps** — the same figure
+  Debian's accessible images play — the moment it appears, and the autoboot
+  timeout is doubled to **120 seconds** (any keypress freezes the countdown).
+  Caveat recorded honestly: the beep depends on GRUB's `play` module and a PC
+  speaker, so it works on BIOS machines and VMs but most signed-UEFI hardware
+  boots stay silent — there the long timeout is the safety net, and the QEMU
+  boot test verifies the beep is really in the recorded audio on every build.
 - **Installer choice:** Anaconda was chosen over the more easily-reskinned Calamares
   specifically because it has a proven, years-tested screen-reader workflow —
   Calamares does not.

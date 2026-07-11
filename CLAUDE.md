@@ -111,6 +111,14 @@ passed with 25s of Orca speech captured. Not visually verified (mechanism
 trusted): the five sets appearing in Settings > Appearance — check during
 the VM install test session.
 
+Boot-menu a11y round 2 (Elliott's concerns 2026-07-10): GRUB now beeps
+twice (Debian's figure, `play 960 440 1 0 4 440 1`, guarded insmod) when
+the menu appears and the timeout doubled to 120s. Smoke test wires the
+emulated PC speaker into the wav capture (-machine pcspk-audiodev) and
+prints per-segment timestamps; beep check is informational, speech check
+still hard-fails. Beep caveat: needs the play module + PC speaker — BIOS
+machines and VMs yes, signed-UEFI hardware mostly no (timeout is the net).
+
 Next up (in order):
 1. VM install test (Anaconda flow + a11y carry-over, see above).
 2. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
