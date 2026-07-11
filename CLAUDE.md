@@ -103,12 +103,17 @@ branding/wallpapers/ so copies can't drift) and registered in
 gnome-background-properties as Aurora/Shift/Headland/Ripple/Curtain.
 Aurora stays the dconf default.
 
+**BUILD 4 VERIFIED 2026-07-10** (screenshots docs/screenshots/build4-*):
+teal accent CONFIRMED — the welcome dialog's Install button renders GNOME
+teal instead of stock blue; settled mark confirmed in dialog + dock;
+Aurora default wallpaper applied; screen-reader boot entry regression
+passed with 25s of Orca speech captured. Not visually verified (mechanism
+trusted): the five sets appearing in Settings > Appearance — check during
+the VM install test session.
+
 Next up (in order):
-1. Build 4 + smoke test: verify settled mark, teal accent (welcome-dialog
-   button + dock highlight should render GNOME teal), five wallpaper sets,
-   and the screen-reader entry regression.
-2. VM install test (Anaconda flow + a11y carry-over, see above).
-3. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
+1. VM install test (Anaconda flow + a11y carry-over, see above).
+2. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
    hooks, GNOME theme + high-contrast variant, Plymouth, snapshot tooling,
    backgrounds RPM instead of build-time curl).
 
