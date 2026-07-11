@@ -111,13 +111,16 @@ passed with 25s of Orca speech captured. Not visually verified (mechanism
 trusted): the five sets appearing in Settings > Appearance — check during
 the VM install test session.
 
-Boot-menu a11y round 2 (Elliott's concerns 2026-07-10): GRUB now beeps
-twice (Debian's figure, `play 960 440 1 0 4 440 1`, guarded insmod) when
-the menu appears and the timeout doubled to 120s. Smoke test wires the
-emulated PC speaker into the wav capture (-machine pcspk-audiodev) and
-prints per-segment timestamps; beep check is informational, speech check
-still hard-fails. Beep caveat: needs the play module + PC speaker — BIOS
-machines and VMs yes, signed-UEFI hardware mostly no (timeout is the net).
+**BUILD 5 VERIFIED 2026-07-11** — boot-menu a11y round 2 (Elliott's
+concerns): GRUB beeps twice when the menu appears (Debian's figure,
+`play 960 440 1 0 4 440 1`, guarded insmod) and the timeout doubled to
+120s (countdown confirmed on-screen). Smoke test wires the emulated PC
+speaker into the wav capture (-machine pcspk-audiodev) and prints
+per-segment timestamps: build 5 shows the beep blip at capture start +
+Orca speech later — BEEP CUE DETECTED, SPEECH CHECK PASSED. Beep check
+is informational, speech check still hard-fails. Beep caveat: needs the
+play module + PC speaker — BIOS machines and VMs yes, signed-UEFI
+hardware mostly no (the 120s timeout is the net there).
 
 Build stamping (Elliott 2026-07-11): every ISO self-identifies — BUILD_ID
 in os-release (N.YYYYMMDD.g<hash>; N from build/BUILD_NUMBER, bump it per
