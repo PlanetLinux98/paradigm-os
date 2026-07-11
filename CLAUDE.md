@@ -131,6 +131,14 @@ kickstart keeps the placeholders. Spell out "build N", never "bN" (reads
 as beta). First stamped build: 6. Verify Settings > About shows "OS Build"
 during the VM session.
 
+**BUILD 6 VERIFIED 2026-07-11 — FIRST STAMPED BUILD** (screenshot
+docs/screenshots/build6-boot-menu.png): boot menu reads "Start
+ParadigmOS 1.0 (build 6)" on every entry; ISO filename
+ParadigmOS-1.0-Aurora-build6-x86_64.iso; beep + speech checks passed
+again. BUILD_ID/paradigmos-release inside the image use the same
+stamped kickstart (mechanism verified via the boot title); the Settings
+> About "OS Build" row still needs an eyeball in the VM session.
+
 Next up (in order):
 1. VM install test (Anaconda flow + a11y carry-over, see above).
 2. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
