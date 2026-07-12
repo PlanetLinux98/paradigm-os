@@ -33,7 +33,7 @@ visual polish.
   livemedia-creator in a fedora:44 container). Keep `.sh`/`.ks` files LF
   (enforced by .gitattributes).
 
-## Current status (update this section as work proceeds — last: 2026-07-10)
+## Current status (update this section as work proceeds — last: 2026-07-11)
 
 Done: spec finalized (v0.4); repo public at PlanetLinux98/paradigm-os; first
 kickstart draft (`kickstart/paradigmos.ks`) and containerized build script
@@ -139,9 +139,58 @@ again. BUILD_ID/paradigmos-release inside the image use the same
 stamped kickstart (mechanism verified via the boot title); the Settings
 > About "OS Build" row still needs an eyeball in the VM session.
 
+**BUILD 7 VERIFIED 2026-07-11 — UEFI INSTALL CRASH FIXED** (screenshots
+docs/screenshots/build7-*): Elliott's build-6 UEFI install test died at
+"Installing boot loader" with "gen_grub_cfgstub script failed". Root
+cause: the os-release rebrand (ID=paradigmos) broke anaconda PROFILE
+DETECTION — it matches ID/VARIANT_ID exactly, ID_LIKE is ignored — so no
+profile loaded, efi_dir fell back to "default", and /usr/bin/gen_grub_cfgstub
+(grub2's ESP-stub writer, run chrooted by anaconda's EFIGRUB.write_config)
+tried to write into the nonexistent /boot/efi/EFI/default. Losing the
+profile ALSO silently dropped Btrfs-default partitioning, GRUB
+menu_auto_hide, and the Workstation installer stylesheet. Fix: kickstart
+%post now ships /etc/anaconda/profile.d/paradigmos.conf (os_id=paradigmos,
+base_profile=fedora-workstation → fedora; efi_dir must stay "fedora" —
+signed shim's baked-in path). Verified by chrooting into the built
+squashfs and running anaconda's real detection code: efi_dir=fedora,
+default_scheme=BTRFS. Boot menu shows "(build 7)"; beep + speech smoke
+checks passed. The end-to-end UEFI install itself still needs Elliott's
+VM re-test. Red herring, for the record: the first failure's "Network
+not available… to report the issue" line is the web UI's Bugzilla
+crash-report flow — installs need NO network; same bootloader error both
+times.
+
+Upstream (from the same test session): three Bugzilla drafts in
+docs/upstream-issues.md awaiting Elliott's review — anaconda-webui has no
+button access keys and no list type-ahead (real a11y gaps vs old GTK UI),
+plus the misleading network line above. GitHub issues are DISABLED on
+rhinstaller/anaconda{,-webui}; file at bugzilla.redhat.com, product
+Fedora, component anaconda-webui. Orca workaround worth documenting for
+users: the installer is web content, so browse-mode structural nav works
+(B = next button, F = form field). Open decision for Elliott: inherited
+menu_auto_hide means installed systems skip the GRUB menu on healthy
+boots (stock Fedora behavior) — decide whether installed ParadigmOS
+should instead show the menu with the beep cue like the live ISO.
+
+WSL/tooling gotchas (cost real debugging time 2026-07-11):
+- `wsl.exe ... bash -c "..."` one-liners: $variables are expanded by the
+  OUTER WSL shell pass-through and arrive empty inside bash (an early
+  mount "failed" because $ISO was empty). Put anything non-trivial in a
+  script file and run `wsl.exe bash /mnt/c/...` — but launch that from
+  PowerShell, not Git Bash (MSYS mangles /mnt/... args into
+  C:/Program Files/Git/...).
+- Loop mounts inside WSL do NOT persist between wsl.exe invocations
+  (the utility VM idles out) — mount, work, and unmount in one script.
+- chroot python into the squashfs needs /dev bind-mounted (pyudev's
+  find_library dies on missing /dev/null).
+
 Next up (in order):
-1. VM install test (Anaconda flow + a11y carry-over, see above).
-2. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
+1. VM install test with build 7 (Elliott, manual): full UEFI Anaconda
+   flow — confirm the bootloader step passes, a11y carry-over onto the
+   installed system, Btrfs auto-partitioning, Settings > About "OS Build"
+   row, and the five wallpaper sets in Settings > Appearance.
+2. Review + file the three Bugzilla drafts (docs/upstream-issues.md).
+3. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
    hooks, GNOME theme + high-contrast variant, Plymouth, snapshot tooling,
    backgrounds RPM instead of build-time curl).
 
