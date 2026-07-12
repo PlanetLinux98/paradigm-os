@@ -134,6 +134,28 @@ ln -sf ../usr/lib/os-release /etc/os-release
 # One human-readable line for support conversations: which build is this?
 echo "@BUILDINFO@" > /etc/paradigmos-release
 
+# ---- Anaconda profile: keep the installer working after the rebrand ----
+# Anaconda picks its "profile" by matching the RUNNING system's os-release
+# ID/VARIANT_ID exactly against /etc/anaconda/profile.d/ (ID_LIKE is NOT
+# consulted). Our ID=paradigmos matched nothing, so no profile loaded and
+# efi_dir stayed at the base default "default": UEFI installs from build 6
+# died in gen_grub_cfgstub trying to write /boot/efi/EFI/default/grub.cfg
+# into a directory that doesn't exist (2026-07-11). Basing on
+# fedora-workstation (which chains to fedora) restores efi_dir=fedora —
+# the signed shim's baked-in path, never change it — plus Btrfs-by-default
+# partitioning, menu auto-hide, and the Workstation installer stylesheet.
+mkdir -p /etc/anaconda/profile.d
+cat > /etc/anaconda/profile.d/paradigmos.conf << 'EOF'
+[Profile]
+# Define the profile.
+profile_id = paradigmos
+base_profile = fedora-workstation
+
+[Profile Detection]
+# Match os-release values.
+os_id = paradigmos
+EOF
+
 # ---- Branding: wallpapers & logo ----
 # Assets embedded directly so the build is hermetic — no network fetch, no
 # risk of building against a stale GitHub main. Keep in sync with branding/
@@ -828,7 +850,8 @@ EOF
 # here as an explicit spec commitment.
 
 # TODO(anaconda-branding): welcome banner + installer product name via the
-#   supported hooks.
+#   paradigmos.conf profile's [User Interface] hooks (the profile itself
+#   ships above since build 7).
 # TODO(theme): branded GNOME theme + first-class high-contrast variant.
 # TODO(plymouth): ParadigmOS boot splash.
 # TODO(snapshots): preinstall and configure btrfs snapshot tooling (snapper
