@@ -682,6 +682,17 @@ cat > /usr/share/icons/hicolor/scalable/apps/paradigmos-logo.svg << 'EOF'
 EOF
 cp /usr/share/icons/hicolor/scalable/apps/paradigmos-logo.svg \
    /usr/share/icons/hicolor/scalable/apps/fedora-logo-icon.svg
+# The live installer launcher (liveinst.desktop, "Install to hard drive")
+# asks for Icon=org.fedoraproject.AnacondaInstaller, which NO package ships
+# as an icon — GNOME fell back to a generic cog (Elliott's find, build 7).
+# Ship the mark under that name, and over anaconda's own icon name too;
+# drop the stock fixed-size PNGs so the scalable SVG serves every size.
+cp /usr/share/icons/hicolor/scalable/apps/paradigmos-logo.svg \
+   /usr/share/icons/hicolor/scalable/apps/org.fedoraproject.AnacondaInstaller.svg
+cp /usr/share/icons/hicolor/scalable/apps/paradigmos-logo.svg \
+   /usr/share/icons/hicolor/scalable/apps/anaconda.svg
+rm -f /usr/share/icons/hicolor/48x48/apps/anaconda.png \
+      /usr/share/icons/oxygen/48x48/apps/anaconda.png
 gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 
 mkdir -p /usr/share/gnome-background-properties
@@ -690,15 +701,6 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
 <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
 <wallpapers>
   <wallpaper deleted="false">
-    <name>Aurora</name>
-    <filename>/usr/share/backgrounds/paradigmos/aurora-1-light.svg</filename>
-    <filename-dark>/usr/share/backgrounds/paradigmos/aurora-1-dark.svg</filename-dark>
-    <options>zoom</options>
-    <shade_type>solid</shade_type>
-    <pcolor>#2190A4</pcolor>
-    <scolor>#2B5D86</scolor>
-  </wallpaper>
-  <wallpaper deleted="false">
     <name>Shift</name>
     <filename>/usr/share/backgrounds/paradigmos/shift-light.svg</filename>
     <filename-dark>/usr/share/backgrounds/paradigmos/shift-dark.svg</filename-dark>
@@ -706,6 +708,15 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
     <shade_type>solid</shade_type>
     <pcolor>#2190A4</pcolor>
     <scolor>#1A3F5F</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Aurora</name>
+    <filename>/usr/share/backgrounds/paradigmos/aurora-1-light.svg</filename>
+    <filename-dark>/usr/share/backgrounds/paradigmos/aurora-1-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#2190A4</pcolor>
+    <scolor>#2B5D86</scolor>
   </wallpaper>
   <wallpaper deleted="false">
     <name>Headland</name>
@@ -737,6 +748,14 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
 </wallpapers>
 EOF
 
+# The five ParadigmOS sets are the ONLY wallpapers offered in Settings >
+# Appearance (Elliott, 2026-07-16 — stock ones mixed ours all through the
+# grid). Dropping the registration XMLs removes them from the picker; the
+# image files stay on disk, which is cheap and keeps anything that
+# references them directly (e.g. GNOME's default-wallpaper fallback) safe.
+find /usr/share/gnome-background-properties -name '*.xml' \
+     ! -name 'paradigmos.xml' -delete
+
 # ---- Desktop defaults (dconf) ----
 # System defaults only apply if a profile chains the system database —
 # Fedora ships no such profile, so without this file every key below is
@@ -750,16 +769,33 @@ EOF
 mkdir -p /etc/dconf/db/local.d
 cat > /etc/dconf/db/local.d/00-paradigmos << 'EOF'
 [org/gnome/desktop/background]
-picture-uri='file:///usr/share/backgrounds/paradigmos/aurora-1-light.svg'
-picture-uri-dark='file:///usr/share/backgrounds/paradigmos/aurora-1-dark.svg'
+# Default wallpaper: Shift (Elliott's pick, 2026-07-16 — previously Aurora).
+picture-uri='file:///usr/share/backgrounds/paradigmos/shift-light.svg'
+picture-uri-dark='file:///usr/share/backgrounds/paradigmos/shift-dark.svg'
 picture-options='zoom'
 
 [org/gnome/shell]
 enabled-extensions=['dash-to-dock@micxgx.gmail.com']
 
+[org/gnome/desktop/wm/preferences]
+# Minimize/maximize window buttons visible by default (Elliott, 2026-07-16).
+# GNOME ships close-only and Settings has no toggle for this (only GNOME
+# Tweaks does), so the default is what most users will live with.
+button-layout='appicon:minimize,maximize,close'
+
+[org/gnome/desktop/a11y]
+# The actual "Always Show Accessibility Menu" toggle from Settings >
+# Accessibility (Elliott, 2026-07-16). Note: this was previously assumed
+# to be toolkit-accessibility below — wrong key, hence build ≤7 shipped
+# with the menu auto-hiding.
+always-show-universal-access-status=true
+
 [org/gnome/desktop/interface]
-# Accessibility: keep the universal-access menu always visible in the top bar
+# Keep the AT-SPI accessibility stack always on
 toolkit-accessibility=true
+# No top-left hot corner for the Activities overview (Elliott, 2026-07-16);
+# users can re-enable it in Settings > Multitasking.
+enable-hot-corners=false
 # Brand accent: GNOME's stock teal (#2190A4), which IS the brand teal —
 # Elliott aligned the palette to it (2026-07-10) so the supported accent
 # system matches the mark/wallpapers exactly. Enum value, not hex; users
@@ -767,6 +803,22 @@ toolkit-accessibility=true
 accent-color='teal'
 EOF
 dconf update
+
+# gnome-initial-setup runs with its own dconf profile
+# (/usr/share/dconf/profile/gnome-initial-setup) which chains ONLY
+# user-db:user + its own defaults file — NOT system-db:local. So nothing
+# above applied during first-boot setup, and the screen-reader flag an
+# accessible install carries over stayed invisible there too: Orca was
+# silent at the "Welcome to ParadigmOS" setup screen until toggled by hand
+# (Elliott's build-7 install test). /etc/dconf/profile/ takes precedence
+# over /usr/share/dconf/profile/, so ship an override that inserts
+# system-db:local while keeping upstream's initial-setup defaults.
+# (GDM's own profile already chains system-db:local — login screen is fine.)
+cat > /etc/dconf/profile/gnome-initial-setup << 'EOF'
+user-db:user
+system-db:local
+file-db:/usr/share/gnome-initial-setup/initial-setup-dconf-defaults
+EOF
 
 # ---- Accessibility: screen-reader boot entry plumbing ----
 # The ISO boot menus (BIOS + UEFI) carry a "Start ... with screen reader
@@ -808,24 +860,68 @@ systemctl enable paradigmos-a11y-boot.service
 # dconf flip above would NOT survive onto the installed system by itself.
 # Anaconda runs every /usr/share/anaconda/post-scripts/*.ks at install time
 # (livesys-scripts uses the same hook to remove the live user): if this
-# install was started from a speaking session, make the installed system
-# speak from its first boot too — including gnome-initial-setup.
+# install was accessible — booted via the screen-reader menu entry OR the
+# user turned Orca on inside the live session — make the installed system
+# speak from its first boot too, GDM and gnome-initial-setup included
+# (both chain system-db:local; g-i-s via our profile override above).
 # (Written with @POST@/@END@ placeholders because pykickstart's section
 # parser is line-based and would treat literal %post/%end lines inside this
 # heredoc as terminating THIS %post section — build 3 failed exactly there.)
 mkdir -p /usr/share/anaconda/post-scripts
 cat > /usr/share/anaconda/post-scripts/70-paradigmos-a11y.ks << 'EOF'
 @POST@ --nochroot
-if grep -q 'paradigmos.a11y=screenreader' /proc/cmdline; then
+carry=no
+grep -q 'paradigmos.a11y=screenreader' /proc/cmdline && carry=yes
+if [ "$carry" = no ]; then
+    # Manual-Orca case: read the live user's own setting off their session
+    # bus (Super+Alt+S flips exactly this key). Best-effort — any failure
+    # just means no carry-over, never a failed install.
+    uid="$(id -u liveuser 2>/dev/null || true)"
+    if [ -n "$uid" ]; then
+        state="$(runuser -u liveuser -- env "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus" \
+            gsettings get org.gnome.desktop.a11y.applications screen-reader-enabled 2>/dev/null || true)"
+        [ "$state" = "true" ] && carry=yes
+    fi
+fi
+if [ "$carry" = yes ]; then
     mkdir -p "$ANA_INSTALL_PATH/etc/dconf/db/local.d"
-    cp /etc/dconf/db/local.d/20-paradigmos-a11y \
-       "$ANA_INSTALL_PATH/etc/dconf/db/local.d/20-paradigmos-a11y"
+    cat > "$ANA_INSTALL_PATH/etc/dconf/db/local.d/20-paradigmos-a11y" << 'DCONF'
+[org/gnome/desktop/a11y/applications]
+screen-reader-enabled=true
+DCONF
     chroot "$ANA_INSTALL_PATH" dconf update
 fi
 @END@
 EOF
 sed -i 's/^@POST@/%post/; s/^@END@/%end/' \
     /usr/share/anaconda/post-scripts/70-paradigmos-a11y.ks
+
+# ---- Third-party repositories: enabled out of the box ----
+# Elliott's call (2026-07-16): pre-answer Fedora's third-party question so
+# gnome-initial-setup skips its "Third-Party Repositories" page entirely
+# (the page only shows while the state is unconfigured). This enables
+# Fedora's curated extras — Google Chrome repo, NVIDIA driver + Steam
+# repos from RPM Fusion nonfree, PyCharm copr, unfiltered Flathub. Full
+# RPM Fusion free/nonfree is already enabled via the release packages in
+# the image. Offline-safe: only flips repo/flatpak config and records the
+# state; nothing is downloaded here.
+fedora-third-party enable
+
+# ---- Installer completion message: say HOW to restart ----
+# anaconda-webui's final screen says only "To begin using ParadigmOS 1.0
+# (Aurora), reboot your system." — no Restart button, no hint where restart
+# lives (upstream RFE drafted in docs/upstream-issues.md). Until upstream
+# grows a button, make the English message actionable. The webui bundle
+# ships gzipped; the $0 below is the message's product-name placeholder,
+# NOT a shell expansion (single quotes). Non-English locales keep the
+# stock wording (translations load from po.*.js). Build verification
+# greps the image for the new string, so a changed upstream msgid can't
+# silently ship the stale message.
+WEBUI_BUNDLE=/usr/share/cockpit/anaconda-webui/index.js
+gunzip "${WEBUI_BUNDLE}.gz"
+sed -i 's/To begin using $0, reboot your system\./To begin using $0, restart your system: press Ctrl+Alt+Delete and activate Restart./' \
+    "$WEBUI_BUNDLE"
+gzip -9 "$WEBUI_BUNDLE"
 
 # ---- Default file associations: VLC handles media ----
 mkdir -p /usr/share/applications

@@ -40,7 +40,9 @@ forward; update it as decisions evolve.
 - **Knowing when the menu is on screen (Elliott's concern, added 2026-07-10):**
   the menu announces itself with **two short PC-speaker beeps** — the same figure
   Debian's accessible images play — the moment it appears, and the autoboot
-  timeout is doubled to **120 seconds** (any keypress freezes the countdown).
+  timeout is **60 seconds** (any keypress freezes the countdown; builds 5–7
+  used 120s, dialled back to lorax's stock 60s after Elliott's real install
+  testing found it enough, 2026-07-16).
   Caveat recorded honestly: the beep depends on GRUB's `play` module and a PC
   speaker, so it works on BIOS machines and VMs but most signed-UEFI hardware
   boots stay silent — there the long timeout is the safety net, and the QEMU
@@ -83,7 +85,9 @@ colour, blue included — per Elliott's feedback on the first two passes.
 **All five sets approved by Elliott 2026-07-10** after three revision rounds:
 Aurora (`aurora-1`), Shift, Headland, Ripple, and Curtain — each a paired
 light/dark design in `branding/wallpapers/`, all embedded in the kickstart
-and registered in Settings → Appearance. Aurora remains the default.
+and registered in Settings → Appearance. **Shift is the default** (Elliott,
+2026-07-16 — previously Aurora), and the five sets are the only wallpapers
+registered in the picker (stock GNOME/Fedora registrations removed).
 
 **Palette**
 
@@ -99,7 +103,7 @@ and registered in Settings → Appearance. Aurora remains the default.
 
 | Decision | Choice | Why it matters |
 |---|---|---|
-| Wallpaper | Five sets ship, paired light/dark variants: Aurora (default), Shift, Headland, Ripple, Curtain — saturated grounds, no pure white/black | All five approved by Elliott 2026-07-10 (three revision rounds). Embedded in the kickstart; selectable in Settings → Appearance. |
+| Wallpaper | Five sets ship, paired light/dark variants: Shift (default since 2026-07-16, previously Aurora), Aurora, Headland, Ripple, Curtain — saturated grounds, no pure white/black | All five approved by Elliott 2026-07-10 (three revision rounds). Embedded in the kickstart; the only five registered in Settings → Appearance. |
 | Wordmark / mark | "Shifted tile" — three-tone 3×3 grid: dark navy P-tiles (#1F4A6E), lighter grid tiles (#4A8ABD), escaping teal tile (#2190A4) | Elliott picked the concept and settled the tones over two rounds (2026-07-10): P-tiles keep their original shade, grid tiles go lighter, so the P differentiates without darkening. |
 | Versioning | Independent version number + codename | Decoupled from the underlying Fedora version, shown in fine print only. |
 | Codename scheme | Abstract/aspirational words, alphabetical across releases | v1.0 proposed as **"Aurora"**; v2.0 would be a B-word, and so on. |
@@ -115,6 +119,7 @@ and registered in Settings → Appearance. Aurora remains the default.
 | Email client | None preinstalled | Most general users default to webmail today; keeps the base image leaner. |
 | Code/text editor | GNOME Text Editor only | Kept minimal; VS Code and others are a one-click Software Center install, not a default. |
 | Codecs & drivers | RPM Fusion + proprietary codecs + NVIDIA driver detection, bundled by default | Video/audio/gaming/GPU acceleration "just work" — the standard approach used by Fedora remixes like Nobara and Ultramarine. |
+| Third-party repositories | Pre-enabled at build time (`fedora-third-party enable`): Chrome repo, NVIDIA/Steam from RPM Fusion nonfree, PyCharm copr, unfiltered Flathub | Decided 2026-07-16. Matches the "just works" philosophy above and removes the Third-Party Repositories question from first-boot setup entirely. |
 
 ## Desktop experience
 
@@ -123,6 +128,9 @@ and registered in Settings → Appearance. Aurora remains the default.
 | Desktop layout | Persistent dock (macOS-like) | More familiar to switchers than vanilla GNOME's Activities-only workflow; must ship via an Orca-compatible, well-maintained dock extension (Dash-to-Dock family), accessibility-tested before lock-in. |
 | Theming | Teal/blue palette applied through GNOME Shell + GTK + icon theme; high-contrast variant included | Keeps the branded look and the accessible fallback as equally first-class options. |
 | Accent colour | GNOME's built-in `teal` accent (`accent-color='teal'` dconf default), with the brand teal aligned to it (#2190A4) | Decided 2026-07-10. Uses the supported libadwaita accent system — update-proof, high-contrast-safe, user-changeable — instead of fragile CSS overrides; the palette alignment makes it exact rather than approximate. |
+| Window controls | Minimize/maximize/close buttons visible by default (`button-layout` dconf default) | Decided 2026-07-16. GNOME ships close-only and offers no Settings toggle (Tweaks only) — switchers expect all three. Users can still change it. |
+| Hot corner | Top-left Activities hot corner off by default | Decided 2026-07-16. Accidental triggers confuse more than they help; re-enable lives in Settings → Multitasking. |
+| Accessibility menu | "Always Show Accessibility Menu" on by default in the top bar | Decided 2026-07-16. Assistive toggles stay one click/keystroke away for everyone, matching the a11y-first requirement. |
 
 ## Installer & system architecture
 

@@ -1,6 +1,6 @@
-# Upstream issue drafts — Anaconda Web UI (found testing build 6, 2026-07-11)
+# Upstream issue drafts — Anaconda Web UI (found testing builds 6-7, 2026-07-11/16)
 
-Three findings from Elliott's UEFI install test of ParadigmOS build 6
+Four findings from Elliott's UEFI install tests of ParadigmOS builds 6-7
 (Fedora 44 base, anaconda-44.30-2.fc44, anaconda-webui-68-1.fc44), all
 upstream Anaconda Web UI behavior, none remix-specific.
 
@@ -106,6 +106,36 @@ dialog and reword it, e.g. "To report this issue to Bugzilla, first
 connect to a network using the top bar menu." Keep the failure description
 and the reporting instructions visually and semantically separate (also
 helps screen-reader users, who hear the dialog linearly).
+
+Environment: anaconda-44.30-2.fc44, anaconda-webui-68-1.fc44, live UEFI
+install.
+
+---
+
+## Draft 4 — RFE: Restart button on the installation-complete screen (live installs)
+
+**Summary:** Web UI: completion screen tells the user to reboot but offers
+no Restart action and no hint where restarting lives
+
+**Description:**
+
+After a successful live install, the final screen says "To begin using
+<product>, reboot your system." next to an "Exit to live desktop"-style
+button — but there is no Restart/Reboot button, and the message doesn't
+say how to restart. A newcomer (or a screen-reader user navigating an
+unfamiliar desktop) has to go find GNOME's system menu on their own to
+finish the single action the installer just asked of them. The old GTK
+UI's live flow had the same gap, so this is a request to do better, not a
+regression report.
+
+Suggested fix, in order of preference:
+1. Add a "Restart system" button beside the exit-to-desktop action on the
+   completion screen (the session can request reboot via logind).
+2. Failing that, make the message actionable, e.g. "…restart your system:
+   press Ctrl+Alt+Delete and choose Restart."
+
+(Downstream we currently patch option 2's wording into the English bundle;
+a real button would let us drop that.)
 
 Environment: anaconda-44.30-2.fc44, anaconda-webui-68-1.fc44, live UEFI
 install.

@@ -15,13 +15,14 @@ straight into it. The entry goes AFTER the "Test this media" entry so the
 templates' `set default="1"` still points at the media check, and pressing
 Down once from the default also lands on it.
 
-Two further tweaks for users who can't see the menu (Elliott, 2026-07-10):
-the menu announces itself with two short PC-speaker beeps (the same figure
-Debian's accessible images play), and the autoboot timeout doubles to 120s
-so there's time to act on the cue. The beep is guarded -- where the play
+A further tweak for users who can't see the menu (Elliott, 2026-07-10): the
+menu announces itself with two short PC-speaker beeps (the same figure
+Debian's accessible images play). The beep is guarded -- where the play
 module is unavailable (e.g. Fedora's signed UEFI grub, which can't load
 unsigned modules under Secure Boot) or no PC speaker exists, it is a silent
-no-op and the longer timeout is the remaining safety net.
+no-op. The autoboot timeout stays at lorax's stock 60s: it was doubled to
+120s in builds 5-7, and Elliott judged 60s enough after real install
+testing (2026-07-16). Any keypress still freezes the countdown.
 """
 
 import re
@@ -41,9 +42,7 @@ START_BLOCK = re.compile(r"^menuentry 'Start @PRODUCT@ @VERSION@' .*?^\}\n", re.
 TEST_BLOCK = re.compile(r"^menuentry 'Test this media.*?^\}\n", re.S | re.M)
 
 TIMEOUT_OLD = "set timeout=60"
-TIMEOUT_NEW = """# Longer than stock (60s) so a blind user has time to act on the beep cue
-# below before the default entry auto-boots. Any keypress freezes the count.
-set timeout=120
+TIMEOUT_NEW = """set timeout=60
 
 # Audible cue that the boot menu is on screen -- two short beeps, the same
 # figure Debian's accessible images use -- so a blind user knows the moment
@@ -78,7 +77,7 @@ def patch(path: Path) -> None:
     text = text.replace(TIMEOUT_OLD, TIMEOUT_NEW, 1)
 
     path.write_text(text)
-    print(f"{path}: screen-reader entry, menu beep, and 120s timeout added")
+    print(f"{path}: screen-reader entry and menu beep added (timeout stays 60s)")
 
 
 for name in CONFIGS:
