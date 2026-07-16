@@ -50,7 +50,13 @@ docker run --rm --privileged \
   -w /paradigm \
   "fedora:${FEDORA_VERSION}" \
   bash -euxc "
-    dnf install -y lorax-lmc-novirt policycoreutils pykickstart
+    # fedora-cisco-openh264 is enabled by default in the fedora container
+    # and its Cisco-hosted binaries time out routinely (killed build 8's
+    # first run). Nothing we build needs it -- openh264 only ever appears
+    # as a weak dependency of the toolchain, and the kickstart's repos
+    # don't include it -- so keep it out of the resolver entirely.
+    dnf install -y --disablerepo=fedora-cisco-openh264 \
+      lorax-lmc-novirt policycoreutils pykickstart
     # Fail on kickstart parse errors up front instead of mid-run (build 3
     # died on one after the full toolchain install).
     ksvalidator -v F44 '${STAMPED_KS}'
