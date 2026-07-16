@@ -100,8 +100,10 @@ rounds (rev 2: teal shift-light ground, melting headland layers, more
 vivid ripple/curtain; rev 3: shift/headland/ripple fill the frame). All
 eight new SVGs embedded in the kickstart (via scratch script reading
 branding/wallpapers/ so copies can't drift) and registered in
-gnome-background-properties as Aurora/Shift/Headland/Ripple/Curtain.
-Aurora stays the dconf default.
+gnome-background-properties as Shift/Aurora/Headland/Ripple/Curtain.
+SHIFT is the dconf default since build 8 (Elliott 2026-07-16; Aurora was
+the default builds 2-7), and the stock GNOME/Fedora wallpaper XMLs are
+deleted in %post so Settings > Appearance offers only our five.
 
 **BUILD 4 VERIFIED 2026-07-10** (screenshots docs/screenshots/build4-*):
 teal accent CONFIRMED — the welcome dialog's Install button renders GNOME
@@ -184,13 +186,60 @@ WSL/tooling gotchas (cost real debugging time 2026-07-11):
 - chroot python into the squashfs needs /dev bind-mounted (pyudev's
   find_library dies on missing /dev/null).
 
+**BUILD 8 VERIFIED 2026-07-16 — INSTALL-TEST FEEDBACK ROUND** (build 7
+install SUCCEEDED in Elliott's UEFI VM; screenshots docs/screenshots/
+build8-*). Eight feedback items, all landed except one deferred:
+1. Installer app icon was a generic cog: liveinst.desktop wants
+   Icon=org.fedoraproject.AnacondaInstaller, which NOTHING ships as an
+   icon — mark now installed under that name (+ anaconda's own name;
+   stock fixed-size PNGs removed so the SVG serves all sizes).
+2. Webui completion message now says HOW to restart ("press
+   Ctrl+Alt+Delete and activate Restart") — English string patched via
+   gunzip/sed/gzip of index.js.gz in %post, verification greps for it so
+   an upstream msgid change can't silently ship stale wording; proper
+   Restart-button RFE is draft 4 in docs/upstream-issues.md.
+3. ROOT CAUSE of Orca silent at first-boot setup: gnome-initial-setup's
+   dconf profile (/usr/share/dconf/profile/gnome-initial-setup) does NOT
+   chain system-db:local, so the carried screen-reader flag (and ALL our
+   dconf defaults) were invisible there. /etc/dconf/profile/
+   gnome-initial-setup override (adds system-db:local) ships now; GDM's
+   profile already chained local. Carry-over trigger also broadened:
+   kernel arg OR the live user's screen-reader-enabled gsetting (catches
+   Orca toggled manually via Super+Alt+S before installing).
+4. fedora-third-party enable baked at build → g-i-s skips its
+   Third-Party Repositories page; Chrome repo, NVIDIA driver + Steam
+   (RPM Fusion nonfree), PyCharm copr, unfiltered Flathub on by default.
+5. Default wallpaper is now Shift; only our five sets in Settings.
+6. Min/max window buttons on, hot corner off, accessibility menu always
+   shown — note the REAL key for the menu is org/gnome/desktop/a11y
+   always-show-universal-access-status (builds ≤7 wrongly assumed
+   toolkit-accessibility did this).
+7. Live GRUB timeout back to stock 60s (120s judged unnecessary).
+8. A11y preferences screen during install/setup: exists in NEITHER
+   anaconda-webui nor gnome-initial-setup upstream — deferred; options
+   scoped for Elliott (own first-boot a11y quick-settings app would also
+   satisfy the spec's "text size in first-run setup" requirement).
+All items verified inside the built image (icon SVGs, bundle string,
+dconf keys, third-party state, single wallpaper XML, timeout+beep in
+grub.cfg, BUILD_ID 8.20260716.g9d04eef); beep + speech smoke checks
+passed; desktop screenshot shows Shift wallpaper + branded installer
+icon in the dock. Build gotcha fixed in build-iso.sh: fedora-cisco-
+openh264 (enabled by default in the fedora container, Cisco's host
+times out routinely) killed the first build-8 run — the toolchain dnf
+now runs --disablerepo=fedora-cisco-openh264; the image never used it.
+
 Next up (in order):
-1. VM install test with build 7 (Elliott, manual): full UEFI Anaconda
-   flow — confirm the bootloader step passes, a11y carry-over onto the
-   installed system, Btrfs auto-partitioning, Settings > About "OS Build"
-   row, and the five wallpaper sets in Settings > Appearance.
-2. Review + file the three Bugzilla drafts (docs/upstream-issues.md).
-3. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
+1. VM install re-test with build 8 (Elliott, manual): previous checklist
+   (a11y carry-over — GDM and the setup screen should BOTH speak now —
+   Btrfs auto-partitioning, Settings > About "OS Build", wallpapers)
+   plus the new items: branded installer icon in the app grid, restart
+   wording on the completion screen, third-party page skipped in setup,
+   min/max buttons, no hot corner, a11y menu visible.
+2. Review + file the FOUR Bugzilla drafts (docs/upstream-issues.md).
+3. Decide: first-run accessibility screen approach (own quick-settings
+   app vs upstream RFE only) and installed-system GRUB menu_auto_hide
+   (currently inherited Fedora behavior: menu hidden on healthy boots).
+4. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
    hooks, GNOME theme + high-contrast variant, Plymouth, snapshot tooling,
    backgrounds RPM instead of build-time curl).
 
