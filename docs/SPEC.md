@@ -38,11 +38,16 @@ forward; update it as decisions evolve.
   the first boot and `gnome-initial-setup` speak as well. In any session,
   `Super+Alt+S` still toggles Orca manually.
 - **Knowing when the menu is on screen (Elliott's concern, added 2026-07-10):**
-  the menu announces itself with **two short PC-speaker beeps** — the same figure
-  Debian's accessible images play — the moment it appears, and the autoboot
-  timeout is **60 seconds** (any keypress freezes the countdown; builds 5–7
-  used 120s, dialled back to lorax's stock 60s after Elliott's real install
-  testing found it enough, 2026-07-16).
+  the menu announces itself with **three short PC-speaker beeps — Morse "S",
+  matching the S hotkey** (2026-07-16; two beeps before that) the moment it
+  appears, and the autoboot timeout is **60 seconds** (any keypress freezes
+  the countdown; builds 5–7 used 120s, dialled back to lorax's stock 60s
+  after Elliott's real install testing found it enough, 2026-07-16). Honest
+  limit, recorded: GRUB can only drive the legacy PC speaker — it has no
+  path to a sound card, and signed-UEFI GRUB can't load the play module —
+  so on most modern laptops no boot-menu cue is physically possible; the
+  60-second window plus documentation ("wait ~10 seconds, press S, then
+  Enter") is the fallback there.
   Caveat recorded honestly: the beep depends on GRUB's `play` module and a PC
   speaker, so it works on BIOS machines and VMs but most signed-UEFI hardware
   boots stay silent — there the long timeout is the safety net, and the QEMU
@@ -53,7 +58,12 @@ forward; update it as decisions evolve.
 - **High-contrast theme:** ships as an official, first-class alternate look, not a
   generic fallback.
 - **First-run setup:** text size and display scaling are surfaced prominently, not
-  buried in Settings.
+  buried in Settings. Delivered (2026-07-16) by **Accessibility Quick Settings**
+  (`apps/a11y-setup/`), a ParadigmOS app shown once on each user's first login
+  after install — screen reader, magnifier, on-screen keyboard, high contrast,
+  large text, large pointer, reduce animation — and available permanently from
+  the app grid. (Neither Anaconda's web UI nor gnome-initial-setup offers any
+  accessibility page upstream.)
 - **Every custom visual** — wallpaper, theme colors, boot splash, icons — gets
   checked against WCAG contrast guidelines before being locked in.
 
@@ -103,7 +113,7 @@ registered in the picker (stock GNOME/Fedora registrations removed).
 
 | Decision | Choice | Why it matters |
 |---|---|---|
-| Wallpaper | Five sets ship, paired light/dark variants: Shift (default since 2026-07-16, previously Aurora), Aurora, Headland, Ripple, Curtain — saturated grounds, no pure white/black | All five approved by Elliott 2026-07-10 (three revision rounds). Embedded in the kickstart; the only five registered in Settings → Appearance. |
+| Wallpaper | Five sets ship, paired light/dark variants: Shift (default since 2026-07-16, previously Aurora), Aurora, Headland, Ripple, Curtain — saturated grounds, no pure white/black | All five approved by Elliott 2026-07-10 (three revision rounds). Embedded in the kickstart. Stock GNOME/Fedora wallpapers stay available (Elliott 2026-07-16, reversing a brief build-8 removal), with the ParadigmOS five pinned to the top of Settings → Appearance. |
 | Wordmark / mark | "Shifted tile" — three-tone 3×3 grid: dark navy P-tiles (#1F4A6E), lighter grid tiles (#4A8ABD), escaping teal tile (#2190A4) | Elliott picked the concept and settled the tones over two rounds (2026-07-10): P-tiles keep their original shade, grid tiles go lighter, so the P differentiates without darkening. |
 | Versioning | Independent version number + codename | Decoupled from the underlying Fedora version, shown in fine print only. |
 | Codename scheme | Abstract/aspirational words, alphabetical across releases | v1.0 proposed as **"Aurora"**; v2.0 would be a B-word, and so on. |
@@ -131,6 +141,8 @@ registered in the picker (stock GNOME/Fedora registrations removed).
 | Window controls | Minimize/maximize/close buttons visible by default (`button-layout` dconf default) | Decided 2026-07-16. GNOME ships close-only and offers no Settings toggle (Tweaks only) — switchers expect all three. Users can still change it. |
 | Hot corner | Top-left Activities hot corner off by default | Decided 2026-07-16. Accidental triggers confuse more than they help; re-enable lives in Settings → Multitasking. |
 | Accessibility menu | "Always Show Accessibility Menu" on by default in the top bar | Decided 2026-07-16. Assistive toggles stay one click/keystroke away for everyone, matching the a11y-first requirement. |
+| Ctrl+Alt+Delete | Opens GNOME's power dialog (Restart / Power Off) instead of the stock log-out prompt | Decided 2026-07-16 after the installer's "restart your system" message pointed at a chord that only offered Log Out. Also matches Windows-switcher muscle memory. |
+| First-login accessibility setup | "Accessibility Quick Settings" app opens once per user on installed systems | Decided 2026-07-16. Fills the upstream gap (no a11y page in installer or initial setup) and satisfies the first-run text-size requirement. Never autostarts in the live session. |
 
 ## Installer & system architecture
 

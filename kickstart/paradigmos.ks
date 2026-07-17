@@ -701,7 +701,7 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
 <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
 <wallpapers>
   <wallpaper deleted="false">
-    <name>Shift</name>
+    <name>  Shift</name>
     <filename>/usr/share/backgrounds/paradigmos/shift-light.svg</filename>
     <filename-dark>/usr/share/backgrounds/paradigmos/shift-dark.svg</filename-dark>
     <options>zoom</options>
@@ -710,7 +710,7 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
     <scolor>#1A3F5F</scolor>
   </wallpaper>
   <wallpaper deleted="false">
-    <name>Aurora</name>
+    <name> Aurora</name>
     <filename>/usr/share/backgrounds/paradigmos/aurora-1-light.svg</filename>
     <filename-dark>/usr/share/backgrounds/paradigmos/aurora-1-dark.svg</filename-dark>
     <options>zoom</options>
@@ -719,7 +719,7 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
     <scolor>#2B5D86</scolor>
   </wallpaper>
   <wallpaper deleted="false">
-    <name>Headland</name>
+    <name> Headland</name>
     <filename>/usr/share/backgrounds/paradigmos/headland-light.svg</filename>
     <filename-dark>/usr/share/backgrounds/paradigmos/headland-dark.svg</filename-dark>
     <options>zoom</options>
@@ -728,7 +728,7 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
     <scolor>#1A3F5F</scolor>
   </wallpaper>
   <wallpaper deleted="false">
-    <name>Ripple</name>
+    <name> Ripple</name>
     <filename>/usr/share/backgrounds/paradigmos/ripple-light.svg</filename>
     <filename-dark>/usr/share/backgrounds/paradigmos/ripple-dark.svg</filename-dark>
     <options>zoom</options>
@@ -737,7 +737,7 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
     <scolor>#123240</scolor>
   </wallpaper>
   <wallpaper deleted="false">
-    <name>Curtain</name>
+    <name> Curtain</name>
     <filename>/usr/share/backgrounds/paradigmos/curtain-light.svg</filename>
     <filename-dark>/usr/share/backgrounds/paradigmos/curtain-dark.svg</filename-dark>
     <options>zoom</options>
@@ -748,13 +748,14 @@ cat > /usr/share/gnome-background-properties/paradigmos.xml << 'EOF'
 </wallpapers>
 EOF
 
-# The five ParadigmOS sets are the ONLY wallpapers offered in Settings >
-# Appearance (Elliott, 2026-07-16 — stock ones mixed ours all through the
-# grid). Dropping the registration XMLs removes them from the picker; the
-# image files stay on disk, which is cheap and keeps anything that
-# references them directly (e.g. GNOME's default-wallpaper fallback) safe.
-find /usr/share/gnome-background-properties -name '*.xml' \
-     ! -name 'paradigmos.xml' -delete
+# Stock GNOME/Fedora wallpapers stay available (Elliott revised 2026-07-16
+# after build 8 removed them), but the five ParadigmOS sets sort to the top
+# of Settings > Appearance: the panel sorts alphabetically by wallpaper
+# name with plain strcmp (gnome-control-center bg-wallpapers-source.c), so
+# the leading space in our <name> values above pins ours before every
+# letter. The space is invisible in the UI (the grid shows no captions)
+# and screen readers skip leading whitespace. Shift carries two spaces so
+# the default sorts first of all.
 
 # ---- Desktop defaults (dconf) ----
 # System defaults only apply if a profile chains the system database —
@@ -801,6 +802,20 @@ enable-hot-corners=false
 # system matches the mark/wallpapers exactly. Enum value, not hex; users
 # can still change it in Settings > Appearance.
 accent-color='teal'
+
+[org/gnome/settings-daemon/plugins/media-keys]
+# Ctrl+Alt+Delete opens GNOME's power dialog (Restart / Power Off) instead
+# of the stock log-out prompt (Elliott's build-8 feedback, 2026-07-16: the
+# installer's completion message pointed at Ctrl+Alt+Delete but stock GNOME
+# binds it to a Log Out dialog with no Restart). This also matches what
+# Windows switchers expect from the chord.
+logout=@as []
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/paradigmos-power/']
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/paradigmos-power]
+binding='<Control><Alt>Delete'
+command='gnome-session-quit --power-off'
+name='Power off / restart dialog'
 EOF
 dconf update
 
@@ -870,19 +885,28 @@ systemctl enable paradigmos-a11y-boot.service
 mkdir -p /usr/share/anaconda/post-scripts
 cat > /usr/share/anaconda/post-scripts/70-paradigmos-a11y.ks << 'EOF'
 @POST@ --nochroot
+# Breadcrumbs land on the INSTALLED system so a silent-Orca report is
+# diagnosable after the fact: /var/log/paradigmos-a11y-carry.log
+LOG="$ANA_INSTALL_PATH/var/log/paradigmos-a11y-carry.log"
+mkdir -p "$ANA_INSTALL_PATH/var/log"
 carry=no
-grep -q 'paradigmos.a11y=screenreader' /proc/cmdline && carry=yes
+reason=none
+grep -q 'paradigmos.a11y=screenreader' /proc/cmdline && { carry=yes; reason=kernel-arg; }
 if [ "$carry" = no ]; then
     # Manual-Orca case: read the live user's own setting off their session
     # bus (Super+Alt+S flips exactly this key). Best-effort — any failure
     # just means no carry-over, never a failed install.
     uid="$(id -u liveuser 2>/dev/null || true)"
+    state=""
     if [ -n "$uid" ]; then
         state="$(runuser -u liveuser -- env "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus" \
             gsettings get org.gnome.desktop.a11y.applications screen-reader-enabled 2>/dev/null || true)"
-        [ "$state" = "true" ] && carry=yes
     fi
+    [ "$state" = "true" ] && { carry=yes; reason=live-gsetting; }
+    echo "probe: liveuser uid='$uid' screen-reader-enabled='$state'" >> "$LOG"
 fi
+echo "$(date -Is) carry=$carry reason=$reason" >> "$LOG"
+echo "cmdline: $(cat /proc/cmdline)" >> "$LOG"
 if [ "$carry" = yes ]; then
     mkdir -p "$ANA_INSTALL_PATH/etc/dconf/db/local.d"
     cat > "$ANA_INSTALL_PATH/etc/dconf/db/local.d/20-paradigmos-a11y" << 'DCONF'
@@ -890,6 +914,7 @@ if [ "$carry" = yes ]; then
 screen-reader-enabled=true
 DCONF
     chroot "$ANA_INSTALL_PATH" dconf update
+    echo "wrote 20-paradigmos-a11y; dconf update rc=$?" >> "$LOG"
 fi
 @END@
 EOF
@@ -907,6 +932,21 @@ sed -i 's/^@POST@/%post/; s/^@END@/%end/' \
 # state; nothing is downloaded here.
 fedora-third-party enable
 
+# The enable above is NOT enough to hide gnome-initial-setup's
+# "Third-Party Repositories" page: upstream shows that page whenever the
+# fedora-third-party BINARY exists — it never consults the recorded state
+# (gis-software-page.c should_show; its button also always starts "off",
+# and leaving it off changes nothing, so build 8's baked enable silently
+# survived even though the page still appeared — Elliott's find). Skip the
+# page via g-i-s's supported vendor.conf mechanism, preserving Fedora's
+# stock existing_user_only line from the same file.
+mkdir -p /usr/share/gnome-initial-setup
+cat > /usr/share/gnome-initial-setup/vendor.conf << 'EOF'
+[pages]
+skip=software
+existing_user_only=language;keyboard
+EOF
+
 # ---- Installer completion message: say HOW to restart ----
 # anaconda-webui's final screen says only "To begin using ParadigmOS 1.0
 # (Aurora), reboot your system." — no Restart button, no hint where restart
@@ -922,6 +962,218 @@ gunzip "${WEBUI_BUNDLE}.gz"
 sed -i 's/To begin using $0, reboot your system\./To begin using $0, restart your system: press Ctrl+Alt+Delete and activate Restart./' \
     "$WEBUI_BUNDLE"
 gzip -9 "$WEBUI_BUNDLE"
+
+# ---- First-boot accessibility quick settings (Elliott, 2026-07-16) ----
+# Neither anaconda-webui nor gnome-initial-setup ships ANY accessibility
+# page (upstream gap — see docs/upstream-issues.md). Ship our own: a small
+# GTK4/libadwaita window with the essential switches (screen reader,
+# magnifier, on-screen keyboard, high contrast, large text, large pointer,
+# reduce animation), shown ONCE per user on first login into an installed
+# system — never in the live session — and available any time afterwards
+# as "Accessibility Quick Settings" in the app grid. This also delivers
+# the spec requirement: text size surfaced in first-run setup.
+# Master copy: apps/a11y-setup/ in the repo — keep the two in sync.
+cat > /usr/bin/paradigmos-a11y-setup << 'PARADIGMOS_A11Y_EOF'
+#!/usr/bin/python3
+"""ParadigmOS accessibility quick settings.
+
+Shown automatically on a user's first login after installing ParadigmOS
+(launched with --autostart from /etc/xdg/autostart), and available any time
+from the app grid as "Accessibility Quick Settings". Every switch applies
+immediately via GSettings — the same keys GNOME Settings > Accessibility
+writes — so nothing here invents new mechanisms; it only surfaces the
+essentials up front, which the spec requires ("text size and display
+scaling surfaced prominently, not buried in Settings").
+
+Master copy: apps/a11y-setup/ in the repo. A copy is embedded in
+kickstart/paradigmos.ks %post — keep the two in sync.
+"""
+
+import os
+import pwd
+import sys
+
+import gi
+
+gi.require_version("Gtk", "4.0")
+gi.require_version("Adw", "1")
+from gi.repository import Adw, Gio, GLib, Gtk  # noqa: E402
+
+APP_ID = "org.paradigmos.A11ySetup"
+STAMP = os.path.join(GLib.get_user_config_dir(), "paradigmos", "a11y-setup-shown")
+
+LARGE_TEXT_FACTOR = 1.25
+NORMAL_TEXT_FACTOR = 1.0
+LARGE_CURSOR_SIZE = 48
+NORMAL_CURSOR_SIZE = 24
+
+
+def is_live_session():
+    """The live image should not nag: the app only autostarts on installed
+    systems. (Manual launches from the app grid work anywhere.)"""
+    try:
+        pwd.getpwnam("liveuser")
+        return True
+    except KeyError:
+        return False
+
+
+class Window(Adw.ApplicationWindow):
+    def __init__(self, app):
+        super().__init__(application=app, title="Accessibility")
+        self.set_default_size(560, 660)
+
+        self.a11y_apps = Gio.Settings.new("org.gnome.desktop.a11y.applications")
+        self.a11y_iface = Gio.Settings.new("org.gnome.desktop.a11y.interface")
+        self.iface = Gio.Settings.new("org.gnome.desktop.interface")
+
+        page = Adw.PreferencesPage()
+        group = Adw.PreferencesGroup(
+            title="Welcome to ParadigmOS",
+            description=(
+                "Choose the accessibility features you need. Everything "
+                "applies immediately and can be changed at any time in "
+                "Settings › Accessibility."
+            ),
+        )
+        page.add(group)
+
+        group.add(self._bound_row(
+            "Screen Reader",
+            "Speak items on the screen (Orca). Toggle any time with Super+Alt+S",
+            self.a11y_apps, "screen-reader-enabled"))
+        group.add(self._bound_row(
+            "Magnifier",
+            "Zoom in on the whole screen",
+            self.a11y_apps, "screen-magnifier-enabled"))
+        group.add(self._bound_row(
+            "On-Screen Keyboard",
+            "Type without a physical keyboard",
+            self.a11y_apps, "screen-keyboard-enabled"))
+        group.add(self._bound_row(
+            "High Contrast",
+            "Make text and interface outlines stand out",
+            self.a11y_iface, "high-contrast"))
+
+        self.text_row = Adw.SwitchRow(
+            title="Large Text", subtitle="Increase the size of all text")
+        self.text_row.set_active(
+            self.iface.get_double("text-scaling-factor")
+            >= LARGE_TEXT_FACTOR - 0.01)
+        self.text_row.connect("notify::active", self._on_large_text)
+        group.add(self.text_row)
+
+        self.cursor_row = Adw.SwitchRow(
+            title="Large Pointer", subtitle="Make the mouse pointer easier to see")
+        self.cursor_row.set_active(
+            self.iface.get_int("cursor-size") >= LARGE_CURSOR_SIZE)
+        self.cursor_row.connect("notify::active", self._on_large_cursor)
+        group.add(self.cursor_row)
+
+        self.anim_row = Adw.SwitchRow(
+            title="Reduce Animation", subtitle="Minimise on-screen motion")
+        self.anim_row.set_active(not self.iface.get_boolean("enable-animations"))
+        self.anim_row.connect("notify::active", self._on_reduce_animation)
+        group.add(self.anim_row)
+
+        more = Gtk.Button(label="All Accessibility Settings…")
+        more.set_tooltip_text("Open the full Accessibility page in Settings")
+        more.connect("clicked", self._on_open_settings)
+
+        done = Gtk.Button(label="_Done", use_underline=True)
+        done.add_css_class("suggested-action")
+        done.connect("clicked", lambda *_: self.close())
+
+        actions = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12,
+                          halign=Gtk.Align.CENTER,
+                          margin_top=12, margin_bottom=18)
+        actions.append(more)
+        actions.append(done)
+
+        view = Adw.ToolbarView()
+        view.add_top_bar(Adw.HeaderBar())
+        view.set_content(page)
+        view.add_bottom_bar(actions)
+        self.set_content(view)
+
+    def _bound_row(self, title, subtitle, settings, key):
+        row = Adw.SwitchRow(title=title, subtitle=subtitle)
+        settings.bind(key, row, "active", Gio.SettingsBindFlags.DEFAULT)
+        return row
+
+    def _on_large_text(self, row, _pspec):
+        self.iface.set_double(
+            "text-scaling-factor",
+            LARGE_TEXT_FACTOR if row.get_active() else NORMAL_TEXT_FACTOR)
+
+    def _on_large_cursor(self, row, _pspec):
+        self.iface.set_int(
+            "cursor-size",
+            LARGE_CURSOR_SIZE if row.get_active() else NORMAL_CURSOR_SIZE)
+
+    def _on_reduce_animation(self, row, _pspec):
+        self.iface.set_boolean("enable-animations", not row.get_active())
+
+    def _on_open_settings(self, _button):
+        Gio.AppInfo.create_from_commandline(
+            "gnome-control-center universal-access", None,
+            Gio.AppInfoCreateFlags.NONE).launch([], None)
+
+
+class App(Adw.Application):
+    def __init__(self):
+        super().__init__(application_id=APP_ID)
+
+    def do_activate(self):
+        win = self.props.active_window
+        if not win:
+            win = Window(self)
+        win.present()
+
+
+def main():
+    argv = list(sys.argv)
+    autostart = "--autostart" in argv
+    if autostart:
+        argv.remove("--autostart")
+        if is_live_session() or os.path.exists(STAMP):
+            return 0
+        # Stamp immediately: the welcome pass is once per user, full stop.
+        os.makedirs(os.path.dirname(STAMP), exist_ok=True)
+        with open(STAMP, "w", encoding="utf-8") as f:
+            f.write("shown\n")
+    return App().run(argv)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+PARADIGMOS_A11Y_EOF
+chmod +x /usr/bin/paradigmos-a11y-setup
+
+cat > /usr/share/applications/org.paradigmos.A11ySetup.desktop << 'EOF'
+[Desktop Entry]
+Type=Application
+Name=Accessibility Quick Settings
+Comment=Choose the accessibility features you need
+Exec=/usr/bin/paradigmos-a11y-setup
+Icon=preferences-desktop-accessibility
+Terminal=false
+Categories=Utility;Accessibility;Settings;
+Keywords=a11y;orca;screen reader;magnifier;contrast;text size;zoom;
+StartupNotify=true
+EOF
+
+mkdir -p /etc/xdg/autostart
+cat > /etc/xdg/autostart/org.paradigmos.A11ySetup-firstboot.desktop << 'EOF'
+[Desktop Entry]
+Type=Application
+Name=Accessibility Quick Settings (first login)
+Comment=One-time accessibility setup on the first login after install
+Exec=/usr/bin/paradigmos-a11y-setup --autostart
+Icon=preferences-desktop-accessibility
+OnlyShowIn=GNOME;
+X-GNOME-Autostart-Phase=Application
+EOF
 
 # ---- Default file associations: VLC handles media ----
 mkdir -p /usr/share/applications

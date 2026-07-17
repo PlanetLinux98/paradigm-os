@@ -16,13 +16,16 @@ templates' `set default="1"` still points at the media check, and pressing
 Down once from the default also lands on it.
 
 A further tweak for users who can't see the menu (Elliott, 2026-07-10): the
-menu announces itself with two short PC-speaker beeps (the same figure
-Debian's accessible images play). The beep is guarded -- where the play
-module is unavailable (e.g. Fedora's signed UEFI grub, which can't load
-unsigned modules under Secure Boot) or no PC speaker exists, it is a silent
-no-op. The autoboot timeout stays at lorax's stock 60s: it was doubled to
-120s in builds 5-7, and Elliott judged 60s enough after real install
-testing (2026-07-16). Any keypress still freezes the countdown.
+menu announces itself with three short PC-speaker beeps -- Morse "S", for
+the s hotkey (three beeps since 2026-07-16; two before, after Debian's
+accessible-image figure). The beep is guarded -- where the play module is
+unavailable (e.g. Fedora's signed UEFI grub, which can't load unsigned
+modules under Secure Boot) or no PC speaker exists, it is a silent no-op;
+GRUB has no path to the sound card, so on such hardware the cue simply
+cannot exist and the 60s window + docs guidance are the fallback. The
+autoboot timeout stays at lorax's stock 60s: it was doubled to 120s in
+builds 5-7, and Elliott judged 60s enough after real install testing
+(2026-07-16). Any keypress still freezes the countdown.
 """
 
 import re
@@ -44,12 +47,13 @@ TEST_BLOCK = re.compile(r"^menuentry 'Test this media.*?^\}\n", re.S | re.M)
 TIMEOUT_OLD = "set timeout=60"
 TIMEOUT_NEW = """set timeout=60
 
-# Audible cue that the boot menu is on screen -- two short beeps, the same
-# figure Debian's accessible images use -- so a blind user knows the moment
-# the s hotkey (screen-reader session) is available. Guarded: a silent no-op
-# where the play module is unavailable or no PC speaker exists.
+# Audible cue that the boot menu is on screen -- three short beeps, Morse
+# "S" (Elliott, 2026-07-16; two beeps through build 8) -- so a blind user
+# knows the moment the s hotkey (screen-reader session) is available.
+# Guarded: a silent no-op where the play module is unavailable or no PC
+# speaker exists (signed-UEFI hardware, most modern laptops).
 if insmod play; then
-  play 960 440 1 0 4 440 1
+  play 960 440 1 0 4 440 1 0 4 440 1
 fi"""
 
 
