@@ -382,14 +382,17 @@ else:
 
 cmds = [
     "lsblk -o NAME,SIZE,FSTYPE,LABEL /dev/vda",
-    "mkdir -p /m && (mount -o subvol=root /dev/vda3 /m || mount /dev/vda3 /m) && echo MOUNTED",
+    "mkdir -p /m && (mount -o ro,subvol=root /dev/vda3 /m || mount -o ro /dev/vda3 /m) && echo MOUNTED",
+    # a11y carry-over, the preserved_arguments way: the flag must be on the
+    # installed kernel args, and after phase 2's first boot the service
+    # must have written the dconf key + its log.
+    "echo '--- BLS options:' && mkdir -p /b && mount -o ro /dev/vda2 /b && grep -h '^options' /b/loader/entries/*.conf",
+    "echo '--- a11y-boot service log:' && cat /m/var/log/paradigmos-a11y-boot.log",
+    "echo '--- dconf key written by service:' && cat /m/etc/dconf/db/local.d/20-paradigmos-a11y",
     "echo '--- third-party state:' && cat /m/var/lib/fedora-third-party/state",
-    "echo '--- dconf local.d:' && ls -la /m/etc/dconf/db/local.d/",
-    "echo '--- carry file:' && cat /m/etc/dconf/db/local.d/20-paradigmos-a11y",
-    "echo '--- carry breadcrumb:' && cat /m/var/log/paradigmos-a11y-carry.log",
     "echo '--- g-i-s dconf profile:' && cat /m/etc/dconf/profile/gnome-initial-setup",
+    "echo '--- ESP grub stub:' && mkdir -p /e && mount -o ro /dev/vda1 /e && head -2 /e/EFI/fedora/grub.cfg",
     "echo '--- os-release build:' && grep BUILD_ID /m/usr/lib/os-release",
-    "echo '--- anaconda ks post log:' && grep -l . /m/var/log/anaconda/ks-script-*.log 2>/dev/null | head -5",
     "echo INSPECT-DONE",
 ]
 for c in cmds:
