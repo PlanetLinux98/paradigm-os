@@ -269,20 +269,29 @@ inspection. FINDINGS from the first full run (build 9 disk):
   (appendPostScripts has no callers). Builds 3-9's carry-over silently
   did nothing; Elliott's manual observations were accurate.
 
-**BUILD 10 (in progress 2026-07-17) — REAL carry-over fix**: the
-paradigmos anaconda profile now sets [Bootloader] preserved_arguments =
-stock list + paradigmos.a11y, so anaconda itself copies the
-accessible-boot kernel arg onto the installed bootloader (same whitelist
-that preserves console= and speakup_synth; verified the stock list from
-/etc/anaconda/anaconda.conf and that unlisted args get dropped).
-paradigmos-a11y-boot.service (enabled in the image → enabled on installed
-copies, ConditionKernelCommandLine, logs to
-/var/log/paradigmos-a11y-boot.log) flips the screen-reader default before
-GDM on first boot. Dead post-script removed. Known limitation: Orca
-toggled MANUALLY in the live session (no kernel arg) does not carry over
-(it never did); the first-login a11y app is the fallback. VERIFY in the
-install test: BLS options contain paradigmos.a11y=screenreader, and
-phase-2 firstboot audio shows speech at gnome-initial-setup.
+**BUILD 10 VERIFIED 2026-07-17 — ACCESSIBLE INSTALL PROVEN END-TO-END,
+BY MACHINE** (screenshot docs/screenshots/build10-firstboot-setup-
+speaking.png): the REAL carry-over fix. The paradigmos anaconda profile
+now sets [Bootloader] preserved_arguments = stock list + paradigmos.a11y,
+so anaconda itself copies the accessible-boot kernel arg onto the
+installed bootloader (same whitelist that preserves console= and
+speakup_synth; unlisted args get dropped — verified). paradigmos-a11y-
+boot.service (enabled in the image → enabled on installed copies,
+ConditionKernelCommandLine, logs to /var/log/paradigmos-a11y-boot.log)
+flips the screen-reader default before GDM on first boot. Dead
+post-script removed. PROOF via the install-test harness on the build-10
+ISO: unattended S-entry install completed; installed BLS options carry
+"paradigmos.a11y=screenreader"; first boot reached the "Welcome to
+ParadigmOS 1.0 (Aurora)!" Setup screen with the service log + dconf key
+in place and FIVE SECONDS OF REAL ORCA SPEECH captured (peak
+29896/32767) — the exact screen Elliott reported silent in builds 7/8.
+In-image checks also passed (preserved_arguments in profile, all build-9
+items regression-checked, BUILD_ID 10.20260717.g4bf657a). Known
+limitation: Orca toggled MANUALLY in the live session (no kernel arg)
+does not carry over (it never did); the first-login a11y app is the
+fallback. Harness note: a --text install sets the installed default
+target to multi-user — the harness now restores graphical.target itself;
+real webui installs are unaffected.
 
 WSL/QEMU harness gotchas (2026-07-17, cost real time):
 - The WSL VM has 7 GB RAM: run builds, smoke tests, and install tests
@@ -295,17 +304,14 @@ WSL/QEMU harness gotchas (2026-07-17, cost real time):
   "Press ENTER to quit") are documented inline in install-test.sh.
 
 Next up (in order):
-1. Finish build 10 verification: in-image checks + full install test
-   (expect BLS arg + SPEECH at first boot) + smoke test; copy ISO to
-   build/output/ on the Windows side.
-2. VM install re-test with build 10 (Elliott, manual): the accessible
+1. VM install re-test with build 10 (Elliott, manual): the accessible
    path end-to-end — S-entry boot, webui install, first boot should
    speak at Setup — plus the build-9 UI items: wallpapers (ours first,
    stock present), Ctrl+Alt+Delete restart flow, three beeps, no
    third-party page in setup, Accessibility Quick Settings on first
    login, Settings > About "OS Build" row.
-3. Review + file the FOUR Bugzilla drafts (docs/upstream-issues.md).
-4. Decide: installed-system GRUB menu_auto_hide
+2. Review + file the FOUR Bugzilla drafts (docs/upstream-issues.md).
+3. Decide: installed-system GRUB menu_auto_hide
    (currently inherited Fedora behavior: menu hidden on healthy boots).
 4. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
    hooks, GNOME theme + high-contrast variant, Plymouth, snapshot tooling,
