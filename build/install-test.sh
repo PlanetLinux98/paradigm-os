@@ -167,7 +167,13 @@ drain(5)
 # it periodically and presses 'b' the moment Installation Destination
 # reports complete; everything the installer prints lands in
 # ser1-shell.log as it happens.
-send('export TERM=vt100 PYTHONUNBUFFERED=1; '
+# PKEXEC_UID is how anaconda's get_live_user() finds the live user (it is
+# normally set by pkexec when the desktop user launches the installer).
+# Without it the "Setting up the installation environment" task raises
+# "Live user is requested to run command but can't be found" and the
+# install hangs at 0% forever.
+send('export PKEXEC_UID="$(id -u liveuser)"; '
+     'export TERM=vt100 PYTHONUNBUFFERED=1; '
      'export LIVECMD="anaconda --liveinst --kickstart /tmp/ks.cfg --text"; '
      'dbus-run-session -- liveinst; echo LIVEINST-DONE-RC=$?')
 
@@ -206,6 +212,7 @@ recent = b""
 refreshes = 0
 end = time.time() + 55 * 60
 last_poke = time.time()
+last_diag = time.time()
 while time.time() < end:
     try:
         d = s.recv(4096)
@@ -220,9 +227,24 @@ while time.time() < end:
         powered_off = True
         break
 
+    if began and time.time() - last_diag > 120:
+        # Keep evidence flowing while the install runs (or hangs): the
+        # installation-task logs land in ser2-diag.log every two minutes.
+        last_diag = time.time()
+        diag("date; tail -n 4 /tmp/anaconda.log /tmp/program.log "
+             "/tmp/packaging.log /tmp/storage.log 2>/dev/null", 6)
+
     if time.time() - last_poke > 30:
         last_poke = time.time()
         text = recent.decode(errors="replace")
+        if "Press ENTER to quit" in text:
+            # Interactive TUI ignores the kickstart's `shutdown`; quit
+            # anaconda, then power off from the shell we land back in.
+            print("install complete — quitting anaconda and powering off")
+            recent = b""
+            type_and_read(b"\n", 8)
+            type_and_read(b"poweroff\n", 5)
+            continue
         if began and "Please make a selection" in text:
             began = False  # 'b' bounced back to the hub; try again
         if not began:
