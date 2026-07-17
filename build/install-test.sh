@@ -14,14 +14,14 @@
 #                 and read the interesting files off it (third-party state,
 #                 dconf carry-over, logs).
 #
-# Usage: bash build/install-test.sh [output-dir]
+# Usage: bash build/install-test.sh [output-dir] [iso-path]
 # Results land in the output dir (default /root/install-test): logs,
 # screenshots, firstboot.wav, inspect.log. Exit 0 = all phases ran; the
 # captured evidence still needs eyeballing (this is a diagnostic harness,
 # not a pass/fail gate — the checks that can be automatic are printed).
 set -euo pipefail
 
-ISO="$(ls -t /root/paradigm-os/build/output/result/ParadigmOS-*.iso | head -1)"
+ISO="${2:-$(ls -t /root/paradigm-os/build/output/result/ParadigmOS-*.iso | head -1)}"
 OUT="${1:-/root/install-test}"
 OVMF_CODE=/usr/share/OVMF/OVMF_CODE_4M.fd
 OVMF_VARS=/usr/share/OVMF/OVMF_VARS_4M.fd
@@ -56,10 +56,10 @@ lang en_CA.UTF-8
 keyboard us
 timezone America/Toronto
 rootpw --lock
-# vda is the target disk; vdb is the live ISO attached as a read-only
-# virtio disk (QEMU's emulated CD drive never shows up under OVMF +
-# direct kernel boot here, so the harness serves the ISO as a disk —
-# dracut's CDLABEL match works on any block device).
+# vda is the sole target disk; the live ISO rides a q35 SATA CD-ROM.
+# (The default pc machine's IDE CD never appeared in the guest, and
+# attaching the ISO as a read-only virtio disk instead wedged blivet's
+# storage scan — it saw an in-use "disk" carrying the running live root.)
 ignoredisk --only-use=vda
 zerombr
 clearpart --all --initlabel
@@ -75,16 +75,17 @@ trap 'kill $HTTP_PID 2>/dev/null || true' EXIT
 # ---------- phase 1: install ----------
 echo "== phase 1: unattended install (this takes 10-20 min)"
 qemu-system-x86_64 -name install-test-p1 \
-  -enable-kvm -m 4096 -smp 2 \
+  -enable-kvm -machine q35 -m 4096 -smp 2 \
   -drive if=pflash,format=raw,readonly=on,file="$OVMF_CODE" \
   -drive if=pflash,format=raw,file=vars.fd \
   -kernel vmlinuz -initrd initrd.img \
   -append "root=live:CDLABEL=${VOLID} rd.live.image quiet console=ttyS0 systemd.debug_shell=ttyS1 paradigmos.a11y=screenreader" \
   -drive file=disk.qcow2,if=virtio,format=qcow2 \
-  -drive file="$ISO",if=virtio,format=raw,readonly=on \
-  -display none -vnc :9 \
+  -cdrom "$ISO" \
+  -display none -vnc :8 \
   -serial file:ser0-console.log \
   -serial unix:ser1.sock,server,nowait \
+  -serial unix:ser2.sock,server,nowait \
   -monitor unix:mon.sock,server,nowait \
   &> qemu-p1.log &
 QPID=$!
@@ -141,24 +142,119 @@ out = drain(10)
 if b"KS-FETCHED" not in out:
     sys.exit("kickstart fetch failed")
 print("kickstart fetched; starting liveinst")
-send("liveinst --kickstart /tmp/ks.cfg > /tmp/liveinst.log 2>&1; echo LIVEINST-RC=$?; tail -5 /tmp/liveinst.log > /dev/ttyS1")
-# From here the kickstart's `shutdown` should power the VM off; the shell
-# output (if the install errors out first) lands in ser1-shell.log.
-end = time.time() + 60
+# liveinst hard-rejects kickstart options ("Kickstart is not supported on
+# Live ISO installs") and its default is the graphical web UI, which dies
+# without a display. But it honors the LIVECMD override, and anaconda
+# itself takes --kickstart on the live payload. dbus-run-session supplies
+# the session bus the debug shell lacks (the image ships no dbus-launch).
+# Hide the webui from liveinst inside the guest's writable overlay: its
+# start_anaconda() otherwise always spawns the graphical webui-desktop
+# wrapper (which needs a session display), muddying the logs and the flow.
+# The shipped ISO is untouched — this edit lives only in this VM's overlay.
+send("mv /usr/share/cockpit/anaconda-webui /usr/share/cockpit/anaconda-webui.off && echo WEBUI-HIDDEN")
+drain(5)
+# Spawn a side shell on ttyS2 so diagnostics stay possible while the TUI
+# owns ttyS1 (anything typed there becomes installer input).
+send("setsid bash -c 'exec bash <> /dev/ttyS2 >&0 2>&1' & echo SIDE-SHELL-UP")
+drain(5)
+
+# TEXT mode, foreground, on this very serial console. Why: --cmdline mode
+# races — its summary hub hard-fails ("mandatory spokes are not completed:
+# Installation Destination") when it checks a few ms before the storage
+# module finishes initializing, then hangs in the exception loop. The TUI
+# hub is interactive instead: it renders once (often showing a stale
+# "(Processing...)"), then waits at its prompt. The loop below refreshes
+# it periodically and presses 'b' the moment Installation Destination
+# reports complete; everything the installer prints lands in
+# ser1-shell.log as it happens.
+send('export TERM=vt100 PYTHONUNBUFFERED=1; '
+     'export LIVECMD="anaconda --liveinst --kickstart /tmp/ks.cfg --text"; '
+     'dbus-run-session -- liveinst; echo LIVEINST-DONE-RC=$?')
+
+s2 = connect("ser2.sock", tries=30)
+s2.settimeout(5)
+log2 = open("ser2-diag.log", "wb")
+
+def diag(cmd, seconds=6):
+    s2.sendall(cmd.encode() + b"\n")
+    end = time.time() + seconds
+    while time.time() < end:
+        try:
+            d = s2.recv(4096)
+            if d:
+                log2.write(d); log2.flush()
+        except (socket.timeout, OSError):
+            pass
+
+def type_and_read(data, seconds):
+    """Send TUI input, then read the redraw into the log for `seconds`."""
+    global recent
+    s.sendall(data)
+    stop = time.time() + seconds
+    while time.time() < stop:
+        try:
+            d = s.recv(4096)
+            if d:
+                log.write(d); log.flush()
+                recent = (recent + d)[-4000:]
+        except (socket.timeout, OSError):
+            pass
+
+powered_off = False
+began = False
+recent = b""
+refreshes = 0
+end = time.time() + 55 * 60
+last_poke = time.time()
 while time.time() < end:
     try:
         d = s.recv(4096)
-        if d:
-            log.write(d); log.flush()
+        if d == b"":
+            powered_off = True
+            break
+        log.write(d); log.flush()
+        recent = (recent + d)[-4000:]
     except socket.timeout:
         pass
     except OSError:
+        powered_off = True
         break
-print("driver detaching; waiting for VM to power off on its own")
+
+    if time.time() - last_poke > 30:
+        last_poke = time.time()
+        text = recent.decode(errors="replace")
+        if began and "Please make a selection" in text:
+            began = False  # 'b' bounced back to the hub; try again
+        if not began:
+            if "[x] Installation Destination" in text:
+                print("destination ready — pressing b to begin")
+                recent = b""
+                type_and_read(b"b\n", 5)
+                began = True
+            elif "to begin installation" in text:
+                refreshes += 1
+                if refreshes % 4 == 0:
+                    # Kickstart autopart is selected but the spoke stays
+                    # [!] in the liveinst TUI: walk into it and accept the
+                    # defaults, the way a human would (3 = the spoke, then
+                    # 'c' continues through its screens applying defaults).
+                    print("walking the destination spoke with defaults")
+                    recent = b""
+                    for key in (b"3\n", b"c\n", b"c\n", b"c\n"):
+                        type_and_read(key, 7)
+                else:
+                    recent = b""
+                    type_and_read(b"r\n", 3)
+                diag("grep -iE 'error|not enough|too small|exception' "
+                     "/tmp/storage.log 2>/dev/null | tail -3", 4)
+
+if powered_off:
+    print("VM went away — install finished (kickstart shutdown) or died")
+print("driver done" if powered_off else "driver detaching after 55 min")
 PY
 
-# Wait (up to 30 min) for the ks `shutdown` to end the VM
-for i in $(seq 1 180); do
+# Wait (grace period) for the ks `shutdown` to end the VM
+for i in $(seq 1 30); do
   kill -0 "$QPID" 2>/dev/null || break
   sleep 10
   if [ $((i % 18)) -eq 0 ]; then
@@ -178,12 +274,12 @@ echo "== phase 1 done: VM powered off (install finished or aborted — evidence 
 # ---------- phase 2: first boot of the installed system ----------
 echo "== phase 2: first boot, capturing audio + screenshots (4 min)"
 qemu-system-x86_64 -name install-test-p2 \
-  -enable-kvm -m 4096 -smp 2 \
+  -enable-kvm -machine q35 -m 4096 -smp 2 \
   -machine pcspk-audiodev=snd0 \
   -drive if=pflash,format=raw,readonly=on,file="$OVMF_CODE" \
   -drive if=pflash,format=raw,file=vars.fd \
   -drive file=disk.qcow2,if=virtio,format=qcow2 \
-  -display none -vnc :9 \
+  -display none -vnc :8 \
   -audiodev "wav,id=snd0,path=firstboot.wav" \
   -device intel-hda -device hda-duplex,audiodev=snd0 \
   -monitor unix:mon2.sock,server,nowait \
@@ -215,12 +311,12 @@ PY
 # ---------- phase 3: offline inspection of the installed disk ----------
 echo "== phase 3: mounting the installed disk from a live boot"
 qemu-system-x86_64 -name install-test-p3 \
-  -enable-kvm -m 4096 -smp 2 \
+  -enable-kvm -machine q35 -m 4096 -smp 2 \
   -kernel vmlinuz -initrd initrd.img \
   -append "root=live:CDLABEL=${VOLID} rd.live.image quiet console=ttyS0 systemd.debug_shell=ttyS1 3" \
   -drive file=disk.qcow2,if=virtio,format=qcow2 \
-  -drive file="$ISO",if=virtio,format=raw,readonly=on \
-  -display none -vnc :9 \
+  -cdrom "$ISO" \
+  -display none -vnc :8 \
   -serial file:ser0-p3.log \
   -serial unix:ser3.sock,server,nowait \
   -monitor unix:mon3.sock,server,nowait \

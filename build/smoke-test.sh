@@ -15,7 +15,10 @@ MON="/tmp/pmon.sock"
 WAV="$OUT/paradigmos-a11y-speech.wav"
 
 mkdir -p "$OUT"
-pkill -f "qemu-system-x86_64.*ParadigmOS" 2>/dev/null || true
+# Match only THIS test's own VM (via its unique monitor socket) — a plain
+# "qemu.*ParadigmOS" pattern once killed a parallel install-test VM
+# mid-install (its -cdrom path contains "ParadigmOS" too).
+pkill -f "qemu-system-x86_64.*pmon.sock" 2>/dev/null || true
 rm -f "$MON" "$WAV"
 
 # pcspk-audiodev routes the emulated PC speaker into the same capture, so
