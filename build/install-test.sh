@@ -238,9 +238,17 @@ while time.time() < end:
         last_poke = time.time()
         text = recent.decode(errors="replace")
         if "Press ENTER to quit" in text:
-            # Interactive TUI ignores the kickstart's `shutdown`; quit
-            # anaconda, then power off from the shell we land back in.
-            print("install complete — quitting anaconda and powering off")
+            # A --text install leaves the installed default target at
+            # multi-user (matching the install's display mode) — no GDM,
+            # no gnome-initial-setup on first boot. Elliott's real webui
+            # installs default graphical, so put that back while the
+            # target is still mounted. Then quit anaconda (the
+            # interactive TUI ignores the kickstart's `shutdown`) and
+            # power off from the shell we land back in.
+            print("install complete — setting graphical target, quitting, powering off")
+            diag("systemctl --root=/mnt/sysroot set-default graphical.target; "
+                 "systemctl --root=/mnt/sysimage set-default graphical.target; "
+                 "echo TARGET-SET-ATTEMPTED", 8)
             recent = b""
             type_and_read(b"\n", 8)
             type_and_read(b"poweroff\n", 5)
