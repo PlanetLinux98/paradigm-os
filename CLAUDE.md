@@ -228,16 +228,84 @@ openh264 (enabled by default in the fedora container, Cisco's host
 times out routinely) killed the first build-8 run — the toolchain dnf
 now runs --disablerepo=fedora-cisco-openh264; the image never used it.
 
+**BUILD 9 BUILT + IN-IMAGE VERIFIED 2026-07-17** — Elliott's build-8 test
+feedback round: stock wallpapers restored with our five pinned to the top
+of Settings > Appearance (leading-space names — the panel sorts by plain
+strcmp on <name>, invisible in the caption-less grid, ignored by screen
+readers; Shift gets two spaces to sort first); Ctrl+Alt+Delete rebound to
+GNOME's power dialog (stock GNOME binds it to a Log Out prompt with no
+Restart — the installer's completion message now tells the truth; SPEC
+row added); boot-menu cue is now THREE beeps (Morse "S"; GRUB cannot
+reach a sound card and signed-UEFI GRUB can't load the play module, so no
+cue is physically possible on most modern laptops — documented in SPEC);
+g-i-s Third-Party page skipped via vendor.conf [pages] skip=software
+(ROOT CAUSE found in gis-software-page.c: the page shows whenever the
+fedora-third-party BINARY exists, never reads the recorded state, and its
+button always starts "off" — leaving it off changes nothing, so build 8's
+baked enable was working all along and the page was pure noise); NEW
+"Accessibility Quick Settings" app (apps/a11y-setup/, GTK4/libadwaita,
+embedded in kickstart %post): screen reader / magnifier / on-screen
+keyboard / high contrast / large text / large pointer / reduce animation,
+opens once per user on first login into an INSTALLED system (never in
+live), permanently in the app grid — delivers the spec's "text size in
+first-run setup" requirement.
+
+**AUTOMATED INSTALL TEST HARNESS (build/install-test.sh) — WORKING
+2026-07-17.** Run inside WSL: `bash build/install-test.sh [outdir] [iso]`.
+Three phases: (1) unattended kickstart install driven over serial (root
+debug shell on ttyS1, anaconda --text TUI walked by a python driver;
+LIVECMD override + PKEXEC_UID export + dbus-run-session + webui dir
+hidden in the guest overlay — see the script's comments for WHY each is
+needed); (2) first boot of the installed disk with audio capture +
+screenshots; (3) live-boot mount of the installed disk and file
+inspection. FINDINGS from the first full run (build 9 disk):
+- WORKING on a real installed system: Btrfs autopart layout (600M ESP +
+  2G ext4 /boot + btrfs), the ESP grub stub (the build-7 bootloader fix,
+  now proven through an actual install), third-party state
+  "[main] enabled = yes" SURVIVES install intact, vendor.conf page skip,
+  g-i-s dconf profile override, BUILD_ID stamp.
+- BROKEN AND NOW ROOT-CAUSED: the a11y carry-over post-script NEVER ran —
+  /usr/share/anaconda/post-scripts is dead code in anaconda 44
+  (appendPostScripts has no callers). Builds 3-9's carry-over silently
+  did nothing; Elliott's manual observations were accurate.
+
+**BUILD 10 (in progress 2026-07-17) — REAL carry-over fix**: the
+paradigmos anaconda profile now sets [Bootloader] preserved_arguments =
+stock list + paradigmos.a11y, so anaconda itself copies the
+accessible-boot kernel arg onto the installed bootloader (same whitelist
+that preserves console= and speakup_synth; verified the stock list from
+/etc/anaconda/anaconda.conf and that unlisted args get dropped).
+paradigmos-a11y-boot.service (enabled in the image → enabled on installed
+copies, ConditionKernelCommandLine, logs to
+/var/log/paradigmos-a11y-boot.log) flips the screen-reader default before
+GDM on first boot. Dead post-script removed. Known limitation: Orca
+toggled MANUALLY in the live session (no kernel arg) does not carry over
+(it never did); the first-login a11y app is the fallback. VERIFY in the
+install test: BLS options contain paradigmos.a11y=screenreader, and
+phase-2 firstboot audio shows speech at gnome-initial-setup.
+
+WSL/QEMU harness gotchas (2026-07-17, cost real time):
+- The WSL VM has 7 GB RAM: run builds, smoke tests, and install tests
+  SERIALLY, never in parallel (a parallel smoke test's cleanup pkill
+  also murdered an install VM mid-run before its pattern was scoped).
+- Background processes die when their wsl.exe invocation exits — a
+  harness must do everything in one invocation, and killing a harness
+  script kills its VM.
+- anaconda TUI/webui specifics (PKEXEC_UID, LIVECMD, cmdline-mode race,
+  "Press ENTER to quit") are documented inline in install-test.sh.
+
 Next up (in order):
-1. VM install re-test with build 8 (Elliott, manual): previous checklist
-   (a11y carry-over — GDM and the setup screen should BOTH speak now —
-   Btrfs auto-partitioning, Settings > About "OS Build", wallpapers)
-   plus the new items: branded installer icon in the app grid, restart
-   wording on the completion screen, third-party page skipped in setup,
-   min/max buttons, no hot corner, a11y menu visible.
-2. Review + file the FOUR Bugzilla drafts (docs/upstream-issues.md).
-3. Decide: first-run accessibility screen approach (own quick-settings
-   app vs upstream RFE only) and installed-system GRUB menu_auto_hide
+1. Finish build 10 verification: in-image checks + full install test
+   (expect BLS arg + SPEECH at first boot) + smoke test; copy ISO to
+   build/output/ on the Windows side.
+2. VM install re-test with build 10 (Elliott, manual): the accessible
+   path end-to-end — S-entry boot, webui install, first boot should
+   speak at Setup — plus the build-9 UI items: wallpapers (ours first,
+   stock present), Ctrl+Alt+Delete restart flow, three beeps, no
+   third-party page in setup, Accessibility Quick Settings on first
+   login, Settings > About "OS Build" row.
+3. Review + file the FOUR Bugzilla drafts (docs/upstream-issues.md).
+4. Decide: installed-system GRUB menu_auto_hide
    (currently inherited Fedora behavior: menu hidden on healthy boots).
 4. Resolve kickstart `TODO(...)` markers (NVIDIA strategy, Anaconda branding
    hooks, GNOME theme + high-contrast variant, Plymouth, snapshot tooling,
