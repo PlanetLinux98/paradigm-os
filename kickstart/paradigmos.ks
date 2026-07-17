@@ -154,6 +154,26 @@ base_profile = fedora-workstation
 [Profile Detection]
 # Match os-release values.
 os_id = paradigmos
+
+[Bootloader]
+# Carry the accessible-session marker onto installed systems: anaconda
+# copies whitelisted kernel arguments from the installer's cmdline onto
+# the installed bootloader (its old /usr/share/anaconda/post-scripts hook
+# is dead code in anaconda 44 — appendPostScripts has no callers — so
+# builds 3-9's post-script carry-over silently never ran). This option
+# REPLACES the stock list, so it repeats F44's defaults (note the a11y
+# precedent already in it: speakup_synth) and appends paradigmos.a11y.
+# paradigmos-a11y-boot.service, enabled in the image and therefore on
+# every installed copy, turns the flag into the system-wide GNOME
+# screen-reader default on first boot, before GDM/initial-setup start.
+preserved_arguments =
+    cio_ignore zfcp.allow_lun_scan
+    speakup_synth apic noapic apm ide noht acpi video
+    pci nodmraid nompath nomodeset noiswmd fips selinux
+    biosdevname ipv6.disable net.ifnames net.ifnames.prefix
+    nosmt vga rd.net.dns rd.net.dns-resolve-mode rd.net.dns-backend console
+    clk_ignore_unused pd_ignore_unused arm64.nopauth
+    paradigmos.a11y
 EOF
 
 # ---- Branding: wallpapers & logo ----
@@ -843,6 +863,12 @@ EOF
 # screen-reader default on system-wide, so Orca is already talking when the
 # live session (and the installer inside it) comes up. Without the arg the
 # service is inert; Super+Alt+S still toggles Orca manually either way.
+# The SAME service also delivers speech on INSTALLED systems' first boot:
+# anaconda copies paradigmos.a11y=screenreader onto the installed
+# bootloader (preserved_arguments in the paradigmos anaconda profile
+# above), the service is enabled in the image and so on every installed
+# copy, and gnome-initial-setup/GDM read the flipped default through
+# system-db:local (the g-i-s dconf profile override above).
 mkdir -p /usr/libexec/paradigmos
 cat > /usr/libexec/paradigmos/a11y-boot << 'EOF'
 #!/usr/bin/bash
@@ -853,6 +879,8 @@ cat > /etc/dconf/db/local.d/20-paradigmos-a11y << 'DCONF'
 screen-reader-enabled=true
 DCONF
 dconf update
+echo "$(date -Is) screen-reader default enabled (paradigmos.a11y=screenreader on cmdline)" \
+    >> /var/log/paradigmos-a11y-boot.log
 EOF
 chmod +x /usr/libexec/paradigmos/a11y-boot
 
@@ -871,55 +899,16 @@ WantedBy=graphical.target
 EOF
 systemctl enable paradigmos-a11y-boot.service
 
-# A live install copies the pristine image, not the running overlay, so the
-# dconf flip above would NOT survive onto the installed system by itself.
-# Anaconda runs every /usr/share/anaconda/post-scripts/*.ks at install time
-# (livesys-scripts uses the same hook to remove the live user): if this
-# install was accessible — booted via the screen-reader menu entry OR the
-# user turned Orca on inside the live session — make the installed system
-# speak from its first boot too, GDM and gnome-initial-setup included
-# (both chain system-db:local; g-i-s via our profile override above).
-# (Written with @POST@/@END@ placeholders because pykickstart's section
-# parser is line-based and would treat literal %post/%end lines inside this
-# heredoc as terminating THIS %post section — build 3 failed exactly there.)
-mkdir -p /usr/share/anaconda/post-scripts
-cat > /usr/share/anaconda/post-scripts/70-paradigmos-a11y.ks << 'EOF'
-@POST@ --nochroot
-# Breadcrumbs land on the INSTALLED system so a silent-Orca report is
-# diagnosable after the fact: /var/log/paradigmos-a11y-carry.log
-LOG="$ANA_INSTALL_PATH/var/log/paradigmos-a11y-carry.log"
-mkdir -p "$ANA_INSTALL_PATH/var/log"
-carry=no
-reason=none
-grep -q 'paradigmos.a11y=screenreader' /proc/cmdline && { carry=yes; reason=kernel-arg; }
-if [ "$carry" = no ]; then
-    # Manual-Orca case: read the live user's own setting off their session
-    # bus (Super+Alt+S flips exactly this key). Best-effort — any failure
-    # just means no carry-over, never a failed install.
-    uid="$(id -u liveuser 2>/dev/null || true)"
-    state=""
-    if [ -n "$uid" ]; then
-        state="$(runuser -u liveuser -- env "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${uid}/bus" \
-            gsettings get org.gnome.desktop.a11y.applications screen-reader-enabled 2>/dev/null || true)"
-    fi
-    [ "$state" = "true" ] && { carry=yes; reason=live-gsetting; }
-    echo "probe: liveuser uid='$uid' screen-reader-enabled='$state'" >> "$LOG"
-fi
-echo "$(date -Is) carry=$carry reason=$reason" >> "$LOG"
-echo "cmdline: $(cat /proc/cmdline)" >> "$LOG"
-if [ "$carry" = yes ]; then
-    mkdir -p "$ANA_INSTALL_PATH/etc/dconf/db/local.d"
-    cat > "$ANA_INSTALL_PATH/etc/dconf/db/local.d/20-paradigmos-a11y" << 'DCONF'
-[org/gnome/desktop/a11y/applications]
-screen-reader-enabled=true
-DCONF
-    chroot "$ANA_INSTALL_PATH" dconf update
-    echo "wrote 20-paradigmos-a11y; dconf update rc=$?" >> "$LOG"
-fi
-@END@
-EOF
-sed -i 's/^@POST@/%post/; s/^@END@/%end/' \
-    /usr/share/anaconda/post-scripts/70-paradigmos-a11y.ks
+# NOTE, carry-over history: builds 3-9 tried to carry the screen-reader
+# flag onto installed systems with a /usr/share/anaconda/post-scripts/*.ks
+# snippet. That hook is DEAD CODE in anaconda 44 — appendPostScripts() in
+# pyanaconda/kickstart.py has no callers — so the snippet silently never
+# ran (proven by the automated install test: no breadcrumb file on the
+# installed disk). The working mechanism is the preserved_arguments line
+# in the paradigmos anaconda profile + paradigmos-a11y-boot.service, both
+# above. Known limitation: an install started from a session where Orca
+# was toggled on MANUALLY (no kernel arg) gets no carry-over — the
+# Accessibility Quick Settings app on first login is the fallback there.
 
 # ---- Third-party repositories: enabled out of the box ----
 # Elliott's call (2026-07-16): pre-answer Fedora's third-party question so
